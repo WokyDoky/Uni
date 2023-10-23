@@ -27,6 +27,7 @@ public class humanP extends Player{
         move = scan.nextLine();
         move = move.replaceAll("\\s","");
         move = move.toLowerCase();
+        getString(move);
         int [] justInCase = new int[1];
 
         if (move.equals("4")){
@@ -34,7 +35,6 @@ public class humanP extends Player{
             return justInCase;
         }
         String [] coords = move.split(",");
-
         while (true){
             if (!(isInAlphabet(coords[0]) && coords[0].length() == 1 && coords[0].charAt(0) >= 'a' && coords[0].charAt(0) <= 'o')){
                 System.out.println("Invalid option as a letter, choose again: ");
@@ -43,7 +43,8 @@ public class humanP extends Player{
                 move = move.toLowerCase();
                 coords = move.split(",");
             }
-            else if(!isNumeric(coords[1]) && Integer.parseInt(coords[1]) > 15){
+            else if(!isNumeric(coords[1]) || Integer.parseInt(coords[1]) > 15){
+                System.out.println(coords[1]);
                 System.out.println("Invalid option as a number, choose again: ");
                 move = scan.nextLine();
                 move = move.replaceAll("\\s","");
@@ -95,6 +96,19 @@ public class humanP extends Player{
             return false;
         }
         return Character.isLetter(str.charAt(0));
+
+    }
+
+    public String [] getString(String move){
+        move = move.replaceAll("\\s","");
+        move = move.toLowerCase();
+        String [] getOut = new String[]{"4"};
+        if (move.equals("4")){
+            return getOut;
+        }
+
+        if (move.length() <= 1 || move.length() > 3) return new String[]{getOut[-1]};
+        return move.split(",");
 
     }
 

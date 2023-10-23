@@ -4,20 +4,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a8397577-022c-47ad-86e4-2c30f4d51b5b" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/OMOK.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/HW2/Board.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/HW2/Game.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/HW2/Piece.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/HW2/Player.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/HW2/cpuP.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/HW2/humanP.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
+    <list default="true" id="a8397577-022c-47ad-86e4-2c30f4d51b5b" name="Changes" comment="Working version, just mising computer vision.">
+      <change afterPath="$PROJECT_DIR$/src/HW2/BoardTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/HW2/humanPTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OMOK.iml" beforeDir="false" afterPath="$PROJECT_DIR$/OMOK.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/HW2/Board.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/HW2/Board.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/HW2/Game.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/HW2/Game.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/HW2/Player.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/HW2/Player.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/HW2/cpuP.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/HW2/cpuP.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/HW2/humanP.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/HW2/humanP.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -28,10 +24,16 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Class" />
+        <option value="JUnit5 Test Class" />
       </list>
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="computerVision" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="ProjectColorInfo">{
@@ -45,9 +47,16 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "Downloaded.Files.Path.Enabled": "false",
+    "Repository.Attach.Annotations": "true",
+    "Repository.Attach.JavaDocs": "true",
+    "Repository.Attach.Sources": "true",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
+    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary": "JUnit5",
+    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5": "",
+    "create.test.in.the.same.root": "true",
     "git-widget-placeholder": "master",
     "last_opened_file_path": "C:/Users/jdben/IdeaProjects/OMOK",
     "node.js.detected.package.eslint": "true",
@@ -55,13 +64,20 @@
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "onboarding.tips.debug.path": "C:/Users/jdben/IdeaProjects/OMOK/src/Main.java",
-    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "settings.editor.selected.configurable": "editor.preferences.fonts.default",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
-  <component name="RunManager">
-    <configuration name="Game" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="HW2.Game" />
+  <component name="RecentsManager">
+    <key name="CreateTestDialog.Recents.Supers">
+      <recent name="" />
+    </key>
+    <key name="CreateTestDialog.RecentsKey">
+      <recent name="HW2" />
+    </key>
+  </component>
+  <component name="RunManager" selected="JUnit.BoardTest.isMovePossible">
+    <configuration name="BoardTest.isMovePossible" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="OMOK" />
       <extension name="coverage">
         <pattern>
@@ -69,13 +85,85 @@
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
+      <option name="PACKAGE_NAME" value="HW2" />
+      <option name="MAIN_CLASS_NAME" value="HW2.BoardTest" />
+      <option name="METHOD_NAME" value="isMovePossible" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="BoardTest.isThereMoves" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="OMOK" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="HW2.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="HW2" />
+      <option name="MAIN_CLASS_NAME" value="HW2.BoardTest" />
+      <option name="METHOD_NAME" value="isThereMoves" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="BoardTest.placeStone" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="OMOK" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="HW2.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="HW2" />
+      <option name="MAIN_CLASS_NAME" value="HW2.BoardTest" />
+      <option name="METHOD_NAME" value="placeStone" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="BoardTest.populateBoard" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="OMOK" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="HW2.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="HW2" />
+      <option name="MAIN_CLASS_NAME" value="HW2.BoardTest" />
+      <option name="METHOD_NAME" value="populateBoard" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="BoardTest.sizeBoard" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="OMOK" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="HW2.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="HW2" />
+      <option name="MAIN_CLASS_NAME" value="HW2.BoardTest" />
+      <option name="METHOD_NAME" value="sizeBoard" />
+      <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.Game" />
+        <item itemvalue="JUnit.BoardTest.isMovePossible" />
+        <item itemvalue="JUnit.BoardTest.isThereMoves" />
+        <item itemvalue="JUnit.BoardTest.sizeBoard" />
+        <item itemvalue="JUnit.BoardTest.placeStone" />
+        <item itemvalue="JUnit.BoardTest.populateBoard" />
       </list>
     </recent_temporary>
   </component>
@@ -93,12 +181,36 @@
       <workItem from="1696295486265" duration="4583000" />
       <workItem from="1696367269083" duration="31128000" />
       <workItem from="1696541620557" duration="13226000" />
-      <workItem from="1696567091951" duration="1931000" />
+      <workItem from="1696567091951" duration="2142000" />
+      <workItem from="1696716808186" duration="18000" />
+      <workItem from="1696789560496" duration="11955000" />
+      <workItem from="1696861873333" duration="6905000" />
+      <workItem from="1696975704791" duration="1135000" />
+      <workItem from="1697145868911" duration="759000" />
+      <workItem from="1697232280153" duration="791000" />
+      <workItem from="1697248133005" duration="4032000" />
+      <workItem from="1697504582750" duration="1219000" />
+      <workItem from="1697578705903" duration="1266000" />
+      <workItem from="1697595245913" duration="602000" />
+      <workItem from="1698000685254" duration="5812000" />
     </task>
+    <task id="LOCAL-00001" summary="Working version, just mising computer vision.">
+      <option name="closed" value="true" />
+      <created>1696569109591</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1696569109591</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Working version, just mising computer vision." />
+    <option name="LAST_COMMIT_MESSAGE" value="Working version, just mising computer vision." />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

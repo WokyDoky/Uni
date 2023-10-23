@@ -126,7 +126,7 @@ public class Game {
     /**
      * Makes the user select an input for a cheat "level".
      * I have mulitple parameter, so I could overload this method with the one I already had but that proved to be confusing so now it's like this.
-     *
+     *1
      * @param message decides what message should be printed once the secrete menu has been activated to read the users input.
      * @param i makes the number of the first option.
      * @param j makes the selection number of the 2nd option.
@@ -175,15 +175,13 @@ public class Game {
                     int [] options =  player.cheat(test);
                     String letter = Player.numberToLetter(options[1]);
                     System.out.println("Best move: ["+letter+", "+options[0]+"]");
-
-                    //System.out.println(Arrays.toString(player.cheat(test)));
                     if (Board.placeStone(player, opponent)) {
                         System.out.println("Thanks for playing");
                         break;
                     }
                 }
             }
-            case 51 -> {
+            case 42 -> {
                 while (Board.isThereMoves()) {
                     Board.printBoard(test);
                     int [] options =  player.cheat(test);
@@ -195,22 +193,22 @@ public class Game {
                     }
                 }
             }
-            case 42 -> {
+            case 52 -> {
                 while (Board.isThereMoves()) {
                     Board.printBoard(test);
                     int [] options =  player.cheat(test);
                     String letter = Player.numberToLetter(options[1]);
                     System.out.println("Best move: ["+letter+", "+options[0]+"]");
-                    int [] opsOptions =  opponent.cheat(test);
+                    int [] opsOptions =  computer.cheat(test);
                     String letra = Player.numberToLetter(opsOptions[1]);
                     System.out.println("Best move for opponent: ["+letra+", "+options[0]+"]");
-                    if (Board.placeStone(player, opponent)) {
+                    if (Board.placeStone(player, computer)) {
                         System.out.println("Thanks for playing");
                         break;
                     }
                 }
             }
-            case 52 -> {
+            case 51 -> {
                 while (Board.isThereMoves()) {
                     Board.printBoard(test);
                     int [] options =  player.cheat(test);

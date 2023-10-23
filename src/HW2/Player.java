@@ -78,6 +78,8 @@ abstract class Player {
      * @see <a href>https://en.wikipedia.org/wiki/Gomoku#Computers_and_gomoku</a>
      */
     public int [] cheat (String [][] tablero){
+
+
         String [][] temp = new String[tablero.length][tablero.length];
         ArrayList<int []> ans = new ArrayList<>();
 
@@ -91,18 +93,27 @@ abstract class Player {
 
         for (int i = 0; i < tablero.length; i++){
             for (int j = 0; j < tablero.length;j++){
+                if (tablero[i][j].equals("X") || tablero[i][j].equals("O")) continue;
                 resp = isThereAWin(temp, i, j);
-                ans.add(resp);
+                if (resp[2] != 0){
+                    ans.add(resp);
+                }
             }
         }
+
+        if (ans.isEmpty()) return coordForOtherPiece(tablero);
+
+
         int bestOption = Integer.MIN_VALUE;
         int [] possible = new int[2];
         for (int [] possibleAnswer: ans){
             if (possibleAnswer[2] > bestOption) {
-                possible = Arrays.copyOfRange(possibleAnswer,0,2);
+                possible = possibleAnswer;
+                //possible = Arrays.copyOfRange(possibleAnswer,0,2);
                 bestOption = possibleAnswer[2];
             }
         }
+
 
 
         return possible;
@@ -137,6 +148,7 @@ abstract class Player {
      */
     int []isThereAWin(String[][] temp, int i, int j){
         int [] ans = new int[3];
+
         temp[i][j] = getPieceType();
 
         if(Board.hasSomeoneWon(temp)){
@@ -146,14 +158,14 @@ abstract class Player {
             temp[i][j] = ".";
             return ans;
         }
-        else if(find4(temp)){
+        if(find4(temp)){
             ans[0] = i;
             ans[1] = j;
             ans[2] = 4;
             temp[i][j] = ".";
             return ans;
         }
-        else if (find3(temp)) {
+        if (find3(temp)) {
             ans[0] = i;
             ans[1] = j;
             ans[2] = 3;
@@ -163,83 +175,227 @@ abstract class Player {
         else{
             temp[i][j] = ".";
         }
+        temp[i][j] = ".";
         return ans;
     }
 
     /**
      * Works very similar to the method that check if you have won but instead of 5 in a row, it's for 4 in row.
      * @param tablero reads the hypothetical board to check for best moves.
-     * @return set of coordinates in an array.
+     * @return true if there is a spot, false elsewhere.
      */
 
-    private boolean find4(String [][] tablero){
-        for (int i = 0; i < tablero.length; i++) {
-            for (int j = 0; j < tablero[i].length; j++) {
-                if (tablero[i][j].equals(".")){
-                    continue;
-                }
-                // Check horizontally
+    private boolean find4 (String [][]tablero){
+        for (int i = 0; i < tablero.length; i++) { // iterate rows, bottom to top
+            for (int j = 0; j < tablero[i].length; j++){
+                if (tablero[i][j].equals(".")) return false;
                 if (j + 3 < tablero[i].length && tablero[i][j].equals(tablero[i][j + 1]) && tablero[i][j + 1].equals(tablero[i][j + 2]) && tablero[i][j + 2].equals(tablero[i][j + 3])) {
                     return true;
                 }
-
-                // Check vertically
                 if (i + 3 < tablero.length && tablero[i][j].equals(tablero[i + 1][j]) && tablero[i + 1][j].equals(tablero[i + 2][j]) && tablero[i + 2][j].equals(tablero[i + 3][j])) {
                     return true;
                 }
-
-                // Check diagonally (northeast to southwest)
                 if (i + 3 < tablero.length && j + 3 < tablero[i].length && tablero[i][j].equals(tablero[i + 1][j + 1]) && tablero[i + 1][j + 1].equals(tablero[i + 2][j + 2]) && tablero[i + 2][j + 2].equals(tablero[i + 3][j + 3])) {
                     return true;
                 }
 
-                // Check diagonally (southwest to northeast)
                 if (i - 3 >= 0 && j + 3 < tablero[i].length && tablero[i][j].equals(tablero[i - 1][j + 1]) && tablero[i - 1][j + 1].equals(tablero[i - 2][j + 2]) && tablero[i - 2][j + 2].equals(tablero[i - 3][j + 3])) {
+
                     return true;
                 }
+
             }
+
         }
 
-        // If we reach here, there are no 5 in a row of the same type of string.
+// If we reach here, there are no 4 in a row of the same type of string.
+
         return false;
+
+
     }
+
     /**
-     * Works very similar to the method that check if you have won but instead of 5 in a row, it's for 3 in row.
-     * I believe searching for 2 in a row is not as strong of a strategy.
+     * Works very similar to the method that check if you have won but instead of 5 in a row,
+     * it's for 3 in row. * I believe searching for 2 in a row is not as strong of a strategy.
      * You can spend your time else where, like checking for the opponents best moves.
-     * @param tablero reads the hypothetical board to check for best moves.
-     * @return set of coordinates in an array.
+     * @param tablero  reads the hypothetical board to check for best moves
+     * @return true if there is a spot, false elsewhere.
      */
     private boolean find3(String [][] tablero){
+        // Check horizontally.
         for (int i = 0; i < tablero.length; i++) {
             for (int j = 0; j < tablero[i].length; j++) {
-                if (tablero[i][j].equals(".")){
-                    continue;
-                }
-                // Check horizontally
+                if (tablero[i][j].equals(".")) return false;
                 if (j + 2 < tablero[i].length && tablero[i][j].equals(tablero[i][j + 1]) && tablero[i][j + 1].equals(tablero[i][j + 2])) {
                     return true;
                 }
 
-                // Check vertically
+
                 if (i + 2 < tablero.length && tablero[i][j].equals(tablero[i + 1][j]) && tablero[i + 1][j].equals(tablero[i + 2][j])) {
                     return true;
                 }
 
-                // Check diagonally (northeast to southwest)
+
                 if (i + 2 < tablero.length && j + 2 < tablero[i].length && tablero[i][j].equals(tablero[i + 1][j + 1]) && tablero[i + 1][j + 1].equals(tablero[i + 2][j + 2])) {
                     return true;
                 }
 
-                // Check diagonally (southwest to northeast)
                 if (i - 2 >= 0 && j + 2 < tablero[i].length && tablero[i][j].equals(tablero[i - 1][j + 1]) && tablero[i - 1][j + 1].equals(tablero[i - 2][j + 2])) {
                     return true;
                 }
+
             }
+
         }
 
-        // If we reach here, there are no 5 in a row of the same type of string.
+
         return false;
+
+
     }
 
+    /**
+     * If you cannot make 3, 4, or 5 in a row then recommend a neighbouring piece.
+     * If there are no possible neighbouring pieces, which is highly unlikely then choose at random.
+     *
+     * @param tablero board to interact with.
+     * @return a coordinate that is neighboring another piece.
+     */
+
+    private int [] coordForOtherPiece (String [][] tablero){
+
+        int [] ans = new int[3];
+        for (int i = 0; i < tablero.length; i ++){
+            for (int j = 0; j <tablero.length; j++){
+                if (tablero[i][j].equals(getPieceType())){
+                    ans[2] = 2;
+                    try{
+                        if (j+1 < tablero.length){
+                            ans[0] = i;
+                            ans[1] = j+1;
+                            return ans;
+                        }
+                        if (i+1 < tablero.length){
+                            ans[0] = i+1;
+                            ans[1] = j;
+                            return ans;
+                        }
+                        if (j-1 >  0){
+                            ans[0] = i;
+                            ans[1] = j-1;
+                            return ans;
+                        }
+                        if (i-1 >  0){
+                            ans[0] = i-1;
+                            ans[1] = j;
+                            return ans;
+                        }
+                    }catch (Exception e){
+                        return coord(tablero);
+                    }
+
+                }
+            }
+        }
+        return ans;
+    }
+
+
+//    private boolean find2 (String [][] tablero){
+//        for (int i = 0; i < tablero.length; i++) {
+//            for (int j = 0; j < tablero[i].length; j++) {
+//                if (tablero[i][j].equals(".")){
+//                    // Check horizontally
+//                    if (j + 2 < tablero[i].length && tablero[i][j].equals(tablero[i][j + 1])) {
+//                        return true;
+//                    }
+//
+//                    // Check vertically
+//                    if (i + 2 < tablero.length && tablero[i][j].equals(tablero[i + 1][j])) {
+//                        return true;
+//                    }
+//
+//                    // Check diagonally (northeast to southwest)
+//                    if (i + 2 < tablero.length && j + 2 < tablero[i].length && tablero[i][j].equals(tablero[i + 1][j + 1])) {
+//                        return true;
+//                    }
+//
+//                    // Check diagonally (southwest to northeast)
+//                    if (i - 2 >= 0 && j + 2 < tablero[i].length && tablero[i][j].equals(tablero[i - 1][j + 1])) {
+//                        return true;
+//                    }
+//                }
+//                return false;
+//            }
+//        }
+//
+//        // If we reach here, there are no 5 in a row of the same type of string.
+//        return false;
+//    }
+
 }
+//private boolean find4(String [][] tablero){
+//        for (int r = 0; r < tablero.length; r++) { // iterate rows, bottom to top
+//            for (int c = 0; c < tablero.length; c++) { // iterate columns, left to right
+//                String piece = tablero[r][c];
+//                if (piece.equals("."))
+//                    continue;
+//                if (c + 3 < tablero.length &&
+//                        piece.equals(tablero[r][c+1])  &&
+//                        piece.equals(tablero[r][c+2]) &&
+//                        piece.equals(tablero[r][c+3]))
+//                    return true;
+//                if (r + 3 < tablero.length) {
+//                    if (piece.equals(tablero[r+1][c]) &&
+//                            piece .equals(tablero[r+2][c]) &&
+//                            piece .equals(tablero[r+3][c]))
+//                        return true;
+//                    if (c + 3 < tablero.length &&
+//                            piece .equals(tablero[r+1][c+1]) &&
+//                            piece .equals(tablero[r+2][c+2]) &&
+//                            piece .equals(tablero[r+3][c+3]))
+//                        return true;
+//                    if (c - 3 >= 0 &&
+//                            piece .equals(tablero[r+1][c-1]) &&
+//                            piece .equals(tablero[r+2][c-2]) &&
+//                            piece .equals(tablero[r+3][c-3]))
+//                        return true;
+//                }
+//            }
+//        }
+//        return false;
+//    }
+//    /**
+//     * Works very similar to the method that check if you have won but instead of 5 in a row, it's for 3 in row.
+//     * I believe searching for 2 in a row is not as strong of a strategy.
+//     * You can spend your time else where, like checking for the opponents best moves.
+//     * @param tablero reads the hypothetical board to check for best moves.
+//     * @return set of coordinates in an array.
+//     */
+//    private boolean find3(String [][] tablero){
+//        for (int i = 0; i < tablero.length; i++) {
+//            for (int j = 0; j < tablero.length; j++) {
+//                if (tablero[i][j].equals("."))
+//                    continue;
+//                if (j + 2 < tablero.length &&
+//                        tablero[i][j].equals(tablero[i][j+1])  &&
+//                        tablero[i][j].equals(tablero[i][j+2]))
+//                    return true;
+//                if (i + 2 < tablero.length) {
+//                    if (tablero[i][j].equals(tablero[i+1][j]) &&
+//                            tablero[i][j] .equals(tablero[i+2][j]))
+//                        return true;
+//                    if (j + 2 < tablero.length &&
+//                            tablero[i][j] .equals(tablero[i+1][j+1]) &&
+//                            tablero[i][j] .equals(tablero[i+2][j+2]) )
+//                        return true;
+//                    if (j - 2 >= 0 &&
+//                            tablero[i][j] .equals(tablero[i+1][j-1]) &&
+//                            tablero[i][j] .equals(tablero[i+2][j-2]))
+//                        return true;
+//                }
+//            }
+//        }
+//        return false;
+//    }

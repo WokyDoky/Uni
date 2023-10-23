@@ -51,6 +51,7 @@ public class Board {
      *                it helps to check hypothetical boards for cheat.
      * @return `true` if someone has won, `false` otherwise
      */
+
     public static boolean hasSomeoneWon (String [][] tablero){
         for (int i = 0; i < tablero.length; i++) {
             for (int j = 0; j < tablero[i].length; j++) {
@@ -103,6 +104,46 @@ public class Board {
     }
 
     /**
+     * This method replaces the one below since now I can test specific moves.
+     * This method is prone to change once the GUI is added.
+     * Possible solution to not change anything, have a converter from clicks to int [] moves.
+     * That way I can keep the same method, although I would like to have the human as a param
+     * @// TODO: 10/22/2023  make the haveYouWon a static method
+     * It will check if the board is "won" and the last player to have placed a piece will be declared as winner.
+     * @param player the acutal move of the player
+     * @param playerPT the piece type of the player
+     * @param opps the move of the opponent
+     * @param oppsPT the piece type of the opponent
+     * @param tablero I have added the board here for testing purposes.
+     * @return true if someone has won, false otherwise.
+     */
+    public static boolean placeStone (int [] player, String playerPT, int [] opps, String oppsPT, String [][]tablero){
+        humanP p1 = new humanP(0, "X");
+        if (player [0] == 1233457754){
+            System.out.println("You have decided to end the game");
+            return true;
+        }
+        tablero[player[0]][player[1]] = playerPT;
+        if (p1.haveYouWon(tablero)){
+            printBoard(tablero);
+            return true;
+        }
+
+
+        if (opps [0] == 1233457754){
+            System.out.println("You have decided to end the game");
+            return true;
+        }
+        tablero[opps[0]][opps[1]] = oppsPT;
+        if (p1.haveYouWon(tablero)){
+            printBoard(tablero);
+            return true;
+        }
+        return false;
+
+    }
+
+    /**
      * Places a stone and checks if someone has won.
      * This method is overloaded to check Human vs Human.
      *
@@ -116,6 +157,7 @@ public class Board {
             System.out.println("You have decided to end the game");
             return true;
         }
+
         tablero[temp[0]][temp[1]] = player.getPieceType();
         if (player.haveYouWon(tablero)){
             printBoard(tablero);
@@ -194,6 +236,24 @@ public class Board {
     }
 
     /**
+     * for testing purposes.
+     * Otherwise, identical method.
+     * @param tablero
+     * @return
+     */
+    public static boolean isThereMoves (String [][] tablero){
+        boolean flag = false;
+        for (int i = 0; i < tablero.length; i++){
+            for (int j = 0; j < tablero.length; j++){
+                if(tablero[i][j].equals(".")){
+                    flag = true;
+                }
+            }
+        }
+        return flag;
+    }
+
+    /**
      * Check if the move from method "coord" is valid.
      *
      * @param human prompts player for a move.
@@ -222,6 +282,29 @@ public class Board {
     }
 
     /**
+     * added for testing purposes.
+     * @param ans checks the individual move instead of using an object.
+     * @return returns the move if its valid, otherwise throws an exception.
+     */
+
+    public static int [] isMovePossible(int [] ans, String [][] tablero){
+
+        if (ans[0] == 1233457754){
+            return ans;
+        }
+        if (ans[0] > 15 || ans[1] > 15){
+            throw new IndexOutOfBoundsException("Index out of bounds");
+        }
+        else if (tablero[ans[0]][ans[1]].equals("X")|| tablero[ans[0]][ans[1]].equals("O")){
+            throw new IllegalArgumentException("Position is occupied");
+        }
+        else{
+            return ans;
+        }
+        //return ans;
+
+    }
+    /**
      *
      * Checks if ithe best move possible can work on current board.
      * This is made for the computer so no printing is done.
@@ -232,27 +315,14 @@ public class Board {
      * @return array of coordinates of best move.
      */
     public static int [] isMovePossible(cpuP computer, humanP player){
-        ArrayList<int []> moves = computer.computerVision(tablero);
-        int [] just2Return = new int[3];
-        do{
-            for (int[] ans : moves) {
-                just2Return  = ans;
-                moves = computer.computerVision(tablero);
-                System.out.println(Arrays.toString(ans));
-                if ((tablero[ans[0]][ans[1]].equals("X") || tablero[ans[0]][ans[1]].equals("O"))) {
-                    int[] temp = player.cheat(tablero);
-                    return computer.coord(tablero);
-//                    if (temp[0] == 0 && temp[1] == 0) {
-//
-//                    } else {
-//                        return player.cheat(tablero);
-//                    }
-                }
-            }
-        }
-        while(just2Return[0] > 15 || just2Return[1] > 15 || (tablero[just2Return[0]][just2Return[1]].equals("X") || tablero[just2Return[0]][just2Return[1]].equals("O")));
-        return just2Return;
 
+
+        if (computer.cheat(tablero)[2] == 0) return computer.coord(tablero);
+        if (player.cheat((tablero))[2] == 3 || player.cheat((tablero))[2] == 4 || player.cheat((tablero))[2] == 5){
+            return player.cheat(tablero);
+        }
+
+        return computer.coord(tablero);
     }
 }
 
