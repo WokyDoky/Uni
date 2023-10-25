@@ -4,16 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a8397577-022c-47ad-86e4-2c30f4d51b5b" name="Changes" comment="Working version, just mising computer vision.">
-      <change afterPath="$PROJECT_DIR$/src/HW2/BoardTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/HW2/humanPTest.java" afterDir="false" />
+    <list default="true" id="a8397577-022c-47ad-86e4-2c30f4d51b5b" name="Changes" comment="Working version, should probably change some static methods and get prepared for the GUI version of the code.">
+      <change afterPath="$PROJECT_DIR$/src/omok/model/Board.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/omok/model/BoardTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/omok/model/Player.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OMOK.iml" beforeDir="false" afterPath="$PROJECT_DIR$/OMOK.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/HW2/Board.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/HW2/Board.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/HW2/Game.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/HW2/Game.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/HW2/Player.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/HW2/Player.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/HW2/cpuP.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/HW2/cpuP.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/HW2/humanP.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/HW2/humanP.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -58,7 +53,7 @@
     "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5": "",
     "create.test.in.the.same.root": "true",
     "git-widget-placeholder": "master",
-    "last_opened_file_path": "C:/Users/jdben/IdeaProjects/OMOK",
+    "last_opened_file_path": "C:/Users/jdben/IdeaProjects/Homeworks",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -73,85 +68,85 @@
       <recent name="" />
     </key>
     <key name="CreateTestDialog.RecentsKey">
+      <recent name="omok.model" />
       <recent name="HW2" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.BoardTest.isMovePossible">
-    <configuration name="BoardTest.isMovePossible" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="JUnit.BoardTest.isWonBy">
+    <configuration name="BoardTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="OMOK" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="HW2.*" />
+          <option name="PATTERN" value="omok.model.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="HW2" />
-      <option name="MAIN_CLASS_NAME" value="HW2.BoardTest" />
-      <option name="METHOD_NAME" value="isMovePossible" />
+      <option name="PACKAGE_NAME" value="omok.model" />
+      <option name="MAIN_CLASS_NAME" value="omok.model.BoardTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="BoardTest.isOccupiedBy" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="OMOK" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="omok.model.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="omok.model" />
+      <option name="MAIN_CLASS_NAME" value="omok.model.BoardTest" />
+      <option name="METHOD_NAME" value="isOccupiedBy" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="BoardTest.isThereMoves" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="BoardTest.isWonBy" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="OMOK" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="HW2.*" />
+          <option name="PATTERN" value="omok.model.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="HW2" />
-      <option name="MAIN_CLASS_NAME" value="HW2.BoardTest" />
-      <option name="METHOD_NAME" value="isThereMoves" />
+      <option name="PACKAGE_NAME" value="omok.model" />
+      <option name="MAIN_CLASS_NAME" value="omok.model.BoardTest" />
+      <option name="METHOD_NAME" value="isWonBy" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="BoardTest.placeStone" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="BoardTest.playerAt" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="OMOK" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="HW2.*" />
+          <option name="PATTERN" value="omok.model.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="HW2" />
-      <option name="MAIN_CLASS_NAME" value="HW2.BoardTest" />
-      <option name="METHOD_NAME" value="placeStone" />
+      <option name="PACKAGE_NAME" value="omok.model" />
+      <option name="MAIN_CLASS_NAME" value="omok.model.BoardTest" />
+      <option name="METHOD_NAME" value="playerAt" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="BoardTest.populateBoard" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="BoardTest.winningRow" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="OMOK" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="HW2.*" />
+          <option name="PATTERN" value="omok.model.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="HW2" />
-      <option name="MAIN_CLASS_NAME" value="HW2.BoardTest" />
-      <option name="METHOD_NAME" value="populateBoard" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="BoardTest.sizeBoard" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="OMOK" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="HW2.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="HW2" />
-      <option name="MAIN_CLASS_NAME" value="HW2.BoardTest" />
-      <option name="METHOD_NAME" value="sizeBoard" />
+      <option name="PACKAGE_NAME" value="omok.model" />
+      <option name="MAIN_CLASS_NAME" value="omok.model.BoardTest" />
+      <option name="METHOD_NAME" value="winningRow" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -159,11 +154,11 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.BoardTest.isMovePossible" />
-        <item itemvalue="JUnit.BoardTest.isThereMoves" />
-        <item itemvalue="JUnit.BoardTest.sizeBoard" />
-        <item itemvalue="JUnit.BoardTest.placeStone" />
-        <item itemvalue="JUnit.BoardTest.populateBoard" />
+        <item itemvalue="JUnit.BoardTest.isWonBy" />
+        <item itemvalue="JUnit.BoardTest.winningRow" />
+        <item itemvalue="JUnit.BoardTest" />
+        <item itemvalue="JUnit.BoardTest.playerAt" />
+        <item itemvalue="JUnit.BoardTest.isOccupiedBy" />
       </list>
     </recent_temporary>
   </component>
@@ -192,7 +187,9 @@
       <workItem from="1697504582750" duration="1219000" />
       <workItem from="1697578705903" duration="1266000" />
       <workItem from="1697595245913" duration="602000" />
-      <workItem from="1698000685254" duration="5812000" />
+      <workItem from="1698000685254" duration="6118000" />
+      <workItem from="1698118566458" duration="3144000" />
+      <workItem from="1698165490703" duration="14002000" />
     </task>
     <task id="LOCAL-00001" summary="Working version, just mising computer vision.">
       <option name="closed" value="true" />
@@ -202,7 +199,15 @@
       <option name="project" value="LOCAL" />
       <updated>1696569109591</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Working version, should probably change some static methods and get prepared for the GUI version of the code.">
+      <option name="closed" value="true" />
+      <created>1698030970312</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1698030970312</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -210,10 +215,16 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Working version, just mising computer vision." />
-    <option name="LAST_COMMIT_MESSAGE" value="Working version, just mising computer vision." />
+    <MESSAGE value="Working version, should probably change some static methods and get prepared for the GUI version of the code." />
+    <option name="LAST_COMMIT_MESSAGE" value="Working version, should probably change some static methods and get prepared for the GUI version of the code." />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
     <select />
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/OMOK$BoardTest.ic" NAME="BoardTest Coverage Results" MODIFIED="1698200627344" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>omok.model.*</FILTER>
+    </SUITE>
   </component>
 </project>
