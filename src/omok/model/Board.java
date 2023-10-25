@@ -81,7 +81,6 @@ public class Board {
      * @param y 0-based row (horizontal) index
      */
     public boolean isEmpty(int x, int y) {
-        //probably shouldn't check if position is available in the previous method.
         return board[x][y] == 0;
     }
 
@@ -233,14 +232,6 @@ public class Board {
         return place;
         //Here I could return null. Should ask.
     }
-    public void printer (){
-        for (int [] i : board){
-            for (int j : i){
-                System.out.print("[" + j + "] ");
-            }
-            System.out.println();
-        }
-    }
 
     /**
      * An intersection on an Omok board identified by its 0-based column
@@ -261,7 +252,11 @@ public class Board {
          */
         public Place {
         }
-
+        /**
+         *
+         * @return create an int [] array that will return the values of the place where there are pieces.
+         * This is for ease of use. It can be done with another list or have 2 methods that return x and y.
+         */
         public int[] getCoords() {
                 return new int[]{x, y};
             }

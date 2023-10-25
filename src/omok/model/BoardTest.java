@@ -1,15 +1,22 @@
 package omok.model;
 import org.junit.jupiter.api.Test;
 
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class BoardTest {
+    Board board = new Board();
     Player player = new Player("p1");
     Player opponent = new Player("p2");
 
+    Player computer = new Player("p3");
+
+    /**
+     * Wil check that boards are created successfully.
+     * Will test the size are set accordingly.
+     */
     @Test
     void size() {
-        var board = new Board();
         var biggerBoard = new Board(19);
         var impossibleBoard = new Board(-1);
         assertEquals(15, board.size());
@@ -17,9 +24,12 @@ class BoardTest {
         assertEquals(15, impossibleBoard.size());
     }
 
+
+    /**
+     * Will check that after placing one stone and calling the method, the board resets.
+     */
     @Test
     void clear() {
-        var board = new Board();
         // I will place a stone then clean it.
         board.placeStone(1,1,new Player("p1"));
         assertTrue(board.isOccupied(1,1));
@@ -28,29 +38,56 @@ class BoardTest {
         assertFalse(board.isOccupied(1,1));
     }
 
+    /**
+     * Checks if board is full, which should be false since it has just been initialized.
+     * After filling the board, check again but this time it should be true.
+     * Clears the board and fill only one column and checks again just to make sure.
+     */
     @Test
     void isFull() {
         var board = new Board(6);
         assertFalse(board.isFull());
         for (int i = 0; i < board.size(); i++){
             for (int j = 0; j < board.size(); j++){
-                board.placeStone(i , j, new Player("p1"));
+                board.placeStone(i , j, player);
             }
         }
         assertTrue(board.isFull());
-    }
 
-    @Test
-    void placeStone() {
-        var board = new Board();
-        board.placeStone(1,1,new Player("p1"));
-        assertTrue(board.isOccupied(1,1));
+        board.clear();
+        for (int i = 0; i < 5; i ++) board.placeStone(i,0, player);
         assertFalse(board.isFull());
     }
 
+    /**
+     * Checks that stone has been placed.
+     * Checks the exceptions just in case.
+
+     * Adds stones with other players to test every line.
+     */
+    @Test
+    void placeStone() {
+        board.placeStone(1,1,player);
+        assertTrue(board.isOccupied(1,1));
+        assertFalse(board.isFull());
+
+        assertThrows(IndexOutOfBoundsException.class, () -> board.placeStone(20,20,player));
+        assertThrows(IllegalArgumentException.class, () -> board.placeStone(1,1,player));
+
+        board.placeStone(2,2,opponent);
+        board.isOccupiedBy(2,2, opponent);
+        board.placeStone(3,3,computer);
+        board.isOccupiedBy(3,3,computer);
+    }
+
+    /**
+     * Checks every single space in board to see if it's empty.
+     * Should return true since board has just been created.
+     * After placing a stone, we check to see if that space is empty.
+     * Should return False.
+     */
     @Test
     void isEmpty() {
-        var board = new Board();
         for (int i = 0; i < board.size(); i++){
             for (int j = 0; j < board.size(); j++){
                 assertTrue(board.isEmpty(i,j));
@@ -60,8 +97,12 @@ class BoardTest {
         assertFalse(board.isEmpty(1,1));
     }
 
+    /**
+     * Check every position to see if it has been occupied.
+     */
+
     @Test
-    void isOccupied() {
+     void isOccupied() {
         var board = new Board();
         for (int i = 0; i < board.size(); i++){
             for (int j = 0; j < board.size(); j++){
@@ -72,43 +113,80 @@ class BoardTest {
         assertTrue(board.isOccupied(1,1));
     }
 
+    /**
+     * After placing a stone, we check to see if that same spot has been marked by a player.
+     * Assesses true if the player has indeed placed a stone there.
+     */
     @Test
     void isOccupiedBy() {
-        var board = new Board();
-        board.placeStone(1,1, new Player("p1"));
-        assertTrue(board.isOccupiedBy(1,1, new Player("p1")));
-        assertFalse(board.isOccupiedBy(1,1, new Player("p2")));
+        board.placeStone(1,1, player);
+        assertTrue(board.isOccupiedBy(1,1, player));
+        assertFalse(board.isOccupiedBy(1,1, opponent));
+
+        board.placeStone( 2, 2, opponent);
+        assertTrue(board.isOccupiedBy(2,2,opponent));
+
+        board.placeStone( 3, 3, computer);
+        assertTrue(board.isOccupiedBy(3,3,computer));
     }
 
+    /**
+     * After placing a stone, we check to see if that same spot has been marked by our player.
+     * Assesses true if the player has indeed placed a stone there.
+     */
     @Test
     void playerAt() {
-        var board = new Board();
-        board.placeStone(1,1, new Player("p1"));
+        board.placeStone(1,1, player);
         assertEquals("p1", board.playerAt(1, 1).name());
         assertNotEquals("p2", board.playerAt(1,1).name());
+
+        board.placeStone(2,2,opponent);
+        assertEquals("p2", board.playerAt(2,2).name());
+
+        board.placeStone(3,3, computer);
+        assertEquals("p3", board.playerAt(3,3).name());
     }
 
+    /**
+     * Check to see if the board is in the state of "won" and by whom.
+     * Assesses true if someone has won.
+     */
     @Test
     void isWonBy() {
 
 
         //I could have cleared the board, but I wanted to show the different type of winning possibilities.
 
-        var horizontallWinningBoard = new Board (6);
+        var horizontallWinningBoard = new Board (5);
         for (int i = 0; i < 5; i++) horizontallWinningBoard.placeStone(0,i, player);
-        horizontallWinningBoard.printer();
         assertTrue(horizontallWinningBoard.isWonBy(player));
         assertFalse(horizontallWinningBoard.isWonBy(opponent));
 
-        System.out.println();
-        var verticalWinningBoard = new Board (6);
+        var verticalWinningBoard = new Board (5);
         for (int i = 0; i < 5; i++) verticalWinningBoard.placeStone(i,0, player);
-        verticalWinningBoard.printer();
         assertTrue(verticalWinningBoard.isWonBy(player));
         assertFalse(verticalWinningBoard.isWonBy(opponent));
 
+        //Northwest - Southeast
+        var diagonalWinningBoard = new Board(5);
+        for (int i = 0; i < 5; i++) diagonalWinningBoard.placeStone(i,i, player);
+        assertTrue(diagonalWinningBoard.isWonBy(player));
+        assertFalse(diagonalWinningBoard.isWonBy(opponent));
+
+        //Southwest - Northeast
+        var otherDiagonalWinningBoard = new Board(5);
+        for (int i = 0; i < 5; i++) otherDiagonalWinningBoard.placeStone(i,otherDiagonalWinningBoard.size() - 1 - i, player);
+        assertTrue(otherDiagonalWinningBoard.isWonBy(player));
+        assertFalse(otherDiagonalWinningBoard.isWonBy(opponent));
+
+
+
+
     }
 
+    /**
+     * Assesses true if the Iterable has the correct list of winning moves.
+     */
     @Test
     void winningRow() {
 
@@ -132,16 +210,21 @@ class BoardTest {
         }
 
         //Different size boards and directions.
+        //Northwest - Southeast
         var diagonalBoard = new Board (6);
         for (int i = 0; i < 5; i++) diagonalBoard.placeStone(i,i, player);
         for (Board.Place coordinate : diagonalBoard.winningRow()){
             assertEquals(coordinate.getCoords()[0], coordinate.getCoords()[1]);
         }
 
-        var otherDiagonalBoard = new Board(19);
-        for (int i = otherDiagonalBoard.size() - 1; i > otherDiagonalBoard.size() - 6; i--) otherDiagonalBoard.placeStone(i,i, player);
+        //Southwest - Northeast
+        var otherDiagonalBoard = new Board(5);
+        for (int i = 0; i < 5; i++) otherDiagonalBoard.placeStone(i,otherDiagonalBoard.size() - 1- i, player);
+        int t = 1;
         for (Board.Place coordinate : otherDiagonalBoard.winningRow()){
-            assertEquals(coordinate.getCoords()[0], coordinate.getCoords()[1]);
+            assertEquals(coordinate.getCoords()[0],  (otherDiagonalBoard.size() - t));
+            assertEquals(coordinate.getCoords()[1], t - 1);
+            t++;
         }
 
         //Weird cases:
