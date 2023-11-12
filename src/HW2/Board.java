@@ -85,6 +85,59 @@ public class Board {
     }
 
     /**
+     * This code is almost identical to hasSomeoneWon but instead of returning a boolean
+     * it returns the position where the user win. I did this for the GUI that way it
+     * can highlight the wining path. This can replace hasSomeoneWon but that would mean
+     * to change almost all the code.
+     *
+     * @return 2D array with winning position. Null if no winner.
+     * If correctly implemented, shouldn't return null.
+     */
+    public int [][] modifyWinCheck (){
+        for (int i = 0; i < tablero.length; i++) {
+            for (int j = 0; j < tablero[i].length; j++) {
+                if (tablero[i][j].equals(".")){
+                    continue;
+                }
+                // Check horizontally
+                if (j + 4 < tablero[i].length && tablero[i][j].equals(tablero[i][j + 1]) && tablero[i][j + 1].equals(tablero[i][j + 2]) && tablero[i][j + 2].equals(tablero[i][j + 3]) && tablero[i][j + 3].equals(tablero[i][j + 4])) {
+                    return new int[] []{
+                            {i,i,i,i,i},
+                            {j,j+1,j+2,j+3,j+4}
+                    };
+                }
+
+                // Check vertically
+                if (i + 4 < tablero.length && tablero[i][j].equals(tablero[i + 1][j]) && tablero[i + 1][j].equals(tablero[i + 2][j]) && tablero[i + 2][j].equals(tablero[i + 3][j]) && tablero[i + 3][j].equals(tablero[i + 4][j])) {
+                    return new int[] []{
+                            {i,i+1,i+2,i+3,i+4},
+                            {j,j,j,j,j}
+                    };
+                }
+
+                // Check diagonally (northeast to southwest)
+                if (i + 4 < tablero.length && j + 4 < tablero[i].length && tablero[i][j].equals(tablero[i + 1][j + 1]) && tablero[i + 1][j + 1].equals(tablero[i + 2][j + 2]) && tablero[i + 2][j + 2].equals(tablero[i + 3][j + 3]) && tablero[i + 3][j + 3].equals(tablero[i + 4][j + 4])) {
+                    return new int[] []{
+                            {i,i+1,i+2,i+3,i+4},
+                            {j,j+1,j+2,j+3,j+4}
+                    };
+                }
+
+                // Check diagonally (southwest to northeast)
+                if (i - 4 >= 0 && j + 4 < tablero[i].length && tablero[i][j].equals(tablero[i - 1][j + 1]) && tablero[i - 1][j + 1].equals(tablero[i - 2][j + 2]) && tablero[i - 2][j + 2].equals(tablero[i - 3][j + 3]) && tablero[i - 3][j + 3].equals(tablero[i - 4][j + 4])) {
+                    return new int[] []{
+                            {i,i-1,i-2,i-3,i-4},
+                            {j,j+1,j+2,j+3,j+4}
+                    };
+                }
+            }
+        }
+
+        // If we reach here, there are no 5 in a row of the same type of string.
+        return null;
+    }
+
+    /**
      * Prints given board.
      *
      *

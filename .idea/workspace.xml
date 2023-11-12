@@ -4,12 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a8397577-022c-47ad-86e4-2c30f4d51b5b" name="Changes" comment="Working version, should probably change some static methods and get prepared for the GUI version of the code.&#10;&#10;Added the professors board and the test.&#10;&#10;Added Java Doc.">
-      <change afterPath="$PROJECT_DIR$/src/testing/AllAvailableFontsComboBox.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/testing/GameGUI.java" afterDir="false" />
+    <list default="true" id="a8397577-022c-47ad-86e4-2c30f4d51b5b" name="Changes" comment="Working version.&#10;&#10;Missing Java Doc for new classes.&#10;&#10;Just missing the menu button. Cheat is not working, missing piece. Method can hel .">
+      <change afterPath="$PROJECT_DIR$/src/testing/MenuBarExample_UltraExtended.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/HW2/Board.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/HW2/Board.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/nothingHW4/MyBoardGame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/nothingHW4/MyBoardGame.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/nothingHW4/boardDraw.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/nothingHW4/boardDraw.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/nothingHW4/modifyApplet.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/nothingHW4/testO.java" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -74,8 +76,8 @@
     </key>
   </component>
   <component name="RunManager" selected="Application.MyBoardGame">
-    <configuration name="GUIPart" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="HW4.GUIPart" />
+    <configuration name="GUIStrategy" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="HW4.GUIStrategy" />
       <module name="OMOK" />
       <extension name="coverage">
         <pattern>
@@ -87,12 +89,12 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="GUIStrategy" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="HW4.GUIStrategy" />
+    <configuration name="MenuBarExample_UltraExtended" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="testing.MenuBarExample_UltraExtended" />
       <module name="OMOK" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="HW4.*" />
+          <option name="PATTERN" value="testing.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -142,10 +144,10 @@
     <recent_temporary>
       <list>
         <item itemvalue="Application.MyBoardGame" />
+        <item itemvalue="Application.MenuBarExample_UltraExtended" />
         <item itemvalue="Application.modifyApplet" />
         <item itemvalue="Application.mainTest" />
         <item itemvalue="Application.GUIStrategy" />
-        <item itemvalue="Application.GUIPart" />
       </list>
     </recent_temporary>
   </component>
@@ -184,7 +186,7 @@
       <workItem from="1699293811845" duration="10426000" />
       <workItem from="1699391458313" duration="7669000" />
       <workItem from="1699446175384" duration="36741000" />
-      <workItem from="1699745782312" duration="13897000" />
+      <workItem from="1699745782312" duration="33500000" />
     </task>
     <task id="LOCAL-00001" summary="Working version, just mising computer vision.">
       <option name="closed" value="true" />
@@ -234,7 +236,15 @@
       <option name="project" value="LOCAL" />
       <updated>1699750412165</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="Working version.&#10;&#10;Missing Java Doc for new classes.&#10;&#10;Just missing the menu button. Cheat is not working, missing piece. Method can hel .">
+      <option name="closed" value="true" />
+      <created>1699807828620</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1699807828620</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -245,7 +255,8 @@
     <MESSAGE value="Working version, should probably change some static methods and get prepared for the GUI version of the code." />
     <MESSAGE value="Working version, should probably change some static methods and get prepared for the GUI version of the code.&#10;&#10;Added the professors board and the test." />
     <MESSAGE value="Working version, should probably change some static methods and get prepared for the GUI version of the code.&#10;&#10;Added the professors board and the test.&#10;&#10;Added Java Doc." />
-    <option name="LAST_COMMIT_MESSAGE" value="Working version, should probably change some static methods and get prepared for the GUI version of the code.&#10;&#10;Added the professors board and the test.&#10;&#10;Added Java Doc." />
+    <MESSAGE value="Working version.&#10;&#10;Missing Java Doc for new classes.&#10;&#10;Just missing the menu button. Cheat is not working, missing piece. Method can hel ." />
+    <option name="LAST_COMMIT_MESSAGE" value="Working version.&#10;&#10;Missing Java Doc for new classes.&#10;&#10;Just missing the menu button. Cheat is not working, missing piece. Method can hel ." />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
