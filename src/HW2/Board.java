@@ -28,7 +28,7 @@ public class Board {
      *
      * @return main board of the game is crated and returned.
      */
-    public static String [][] populateBoard(){
+    public String [][] populateBoard(){
         //Here, I changed the variables to statics, so it wouldn't give me an error
         //ask about it
 
@@ -117,7 +117,7 @@ public class Board {
      * @param tablero I have added the board here for testing purposes.
      * @return true if someone has won, false otherwise.
      */
-    public static boolean placeStone (int [] player, String playerPT, int [] opps, String oppsPT, String [][]tablero){
+    public boolean placeStone (int [] player, String playerPT, int [] opps, String oppsPT, String [][] tablero){
         humanP p1 = new humanP(0, "X");
         if (player [0] == 1233457754){
             System.out.println("You have decided to end the game");
@@ -135,6 +135,26 @@ public class Board {
             return true;
         }
         tablero[opps[0]][opps[1]] = oppsPT;
+        if (p1.haveYouWon(tablero)){
+            printBoard(tablero);
+            return true;
+        }
+        return false;
+
+    }
+    public boolean modifyPlaceStone (int [] player, String playerPT){
+        humanP p1;
+        if (playerPT.equals("X")){
+            p1 = new humanP(0, "X");
+        }
+        else{
+            p1 = new humanP(0, "O");
+        }
+        if (player [0] == 1233457754){
+            System.out.println("You have decided to end the game");
+            return true;
+        }
+        tablero[player[0]][player[1]] = playerPT;
         if (p1.haveYouWon(tablero)){
             printBoard(tablero);
             return true;
@@ -280,6 +300,9 @@ public class Board {
         return ans;
 
     }
+    public boolean isMovePossible (int [] ans){
+        return tablero[ans[0]][ans[1]].equals(".");
+    }
 
     /**
      * added for testing purposes.
@@ -323,6 +346,9 @@ public class Board {
         }
 
         return computer.coord(tablero);
+    }
+    public String [][] getBoard (){
+        return tablero;
     }
 }
 

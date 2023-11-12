@@ -46,7 +46,7 @@ public class Game {
 
 
 
-        String [][] test = Board.populateBoard();
+        String [][] test = board.populateBoard();
         switch (mode) {
             case 1 -> {
                 while (Board.isThereMoves()) {

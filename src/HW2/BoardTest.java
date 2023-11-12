@@ -29,7 +29,9 @@ class BoardTest {
     @Test
     void populateBoard() {
 
-        assertTrue(Arrays.deepEquals(testBoard, Board.populateBoard()));
+        Board board = new Board(15);
+
+        assertTrue(Arrays.deepEquals(testBoard, board.populateBoard()));
 
         //The following code is, so I don't have to type the emptyPopulatedBoard Arr
 //        System.out.println("{");
@@ -137,6 +139,7 @@ class BoardTest {
 
     @Test
     void placeStone() {
+        Board board = new Board(15);
         int [] possiblePlayerMove = new int[3];
         possiblePlayerMove[0] = 2;
         possiblePlayerMove[1] = 1;
@@ -145,7 +148,7 @@ class BoardTest {
         possibleOppsMove[0] = 4;
         possibleOppsMove[1] = 7;
 
-        Board.placeStone(possiblePlayerMove, "X", possibleOppsMove, "O", testBoard);
+        board.placeStone(possiblePlayerMove, "X", possibleOppsMove, "O", testBoard);
 
         //Since this method is a void, as human, check if everything is correct.
         //Which it is since we have already tried this method before.
