@@ -143,7 +143,7 @@ public class MyBoardGame extends boardDraw {
 
     /**
      * Connects to the server.
-     * Checks if it's possible, if not, user is notify.
+     * Checks if it's possible, if not, user is notified.
      */
 
     public void newBoardHandleEdgeCase (){
