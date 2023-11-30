@@ -1,0 +1,180 @@
+Index: src/nothingHW4/MyBoardGame.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package nothingHW4;\r\nimport HW2.Board;\r\nimport HW2.cpuP;\r\nimport HW2.humanP;\r\n\r\nimport javax.swing.*;\r\nimport java.awt.*;\r\nimport java.awt.event.*;\r\nimport java.io.BufferedReader;\r\nimport java.io.IOException;\r\nimport java.io.InputStreamReader;\r\nimport java.net.HttpURLConnection;\r\nimport java.net.URL;\r\nimport java.util.*;\r\nimport java.util.regex.Matcher;\r\nimport java.util.regex.Pattern;\r\n\r\npublic class MyBoardGame extends boardDraw {\r\n\r\n    public boolean isWhiteTurn = false;\r\n    public int gameMode = 0;\r\n    private boolean inGame = false;\r\n    private boolean restartConfirmation = false;\r\n    Board errorNotSettingPiecesRight;\r\n\r\n    String [][] tablero2CheckError;\r\n\r\n    String pid;\r\n\r\n\r\n    /**\r\n     * Constructor. It sets the size of the board.\r\n     * It creates a new \"board\" which is what handles the logic behind the scenes.\r\n     * Starts the MouseListener. It is here after IA recommendation. Thank you.\r\n     */\r\n    public MyBoardGame() {\r\n        setPreferredSize(new Dimension(592, 592));\r\n        board = new Board();\r\n        board.populateBoard();\r\n        addMouseListener(new MyMouseListener(this, board)); // Add the MouseListener\r\n        start = new JButton();\r\n        showStartScreen();\r\n\r\n    }\r\n\r\n    /**\r\n     * This is what happens when you click the \"go home\" button.\r\n     */\r\n    @Override\r\n    public void start(){\r\n        Object[] options = {\"Yes, let me go\", \"Keep playing\"};\r\n        int choice = JOptionPane.showOptionDialog(MyBoardGame.this, \"You are about to leave the game.\", \"Leaving?\", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);\r\n        if (choice == JOptionPane.YES_OPTION){\r\n            inGame = false;\r\n            gameMode = 0;\r\n            showStartScreen();\r\n        }\r\n    }\r\n\r\n\r\n    /**\r\n     * First things the player sees.\r\n     * You can also get here from the menu bar.\r\n     */\r\n    private void showStartScreen() {\r\n        //Resets everything .\r\n        removeAll();\r\n        resetGame();\r\n        inGame = false;\r\n        //Sets the button to click.\r\n        JButton startButton = new JButton(\"Start Game\");\r\n        //Shows options if clicked.\r\n        startButton.addActionListener(e -> showGameModeOptions());\r\n        add(startButton);\r\n        start.setEnabled(inGame);\r\n        revalidate();\r\n    }\r\n    /**\r\n    Code gets here if the button to restart is clicked and confirmed.\r\n     **/\r\n    private void resetGame() {\r\n        isWhiteTurn = false;\r\n        board.populateBoard();\r\n        removeAll();\r\n        repaint();\r\n\r\n        if (gameMode == 3) {\r\n            newBoardHandleEdgeCase();\r\n        }\r\n    }\r\n    /**\r\n    Method that shows game mode options and the initial \"play\" button.\r\n    It holds 3 Radio buttons that are shown after press play.\r\n    Once you choose something it sets the field gameMode.\r\n    That's how we know what are we playing.\r\n     **/\r\n    private void showGameModeOptions() {\r\n        removeAll();\r\n        start.setEnabled(false);\r\n\r\n        //Initializes options.\r\n\r\n        if (!inGame) {\r\n            JRadioButton mode1Button = new JRadioButton(\"Player vs Opponent\");\r\n            JRadioButton mode2Button = new JRadioButton(\"Player vs CPU\");\r\n            JRadioButton mode3Button = new JRadioButton(\"Online\");\r\n\r\n            ButtonGroup group = new ButtonGroup();\r\n            group.add(mode1Button);\r\n            group.add(mode2Button);\r\n            group.add(mode3Button);\r\n\r\n            JButton playButton = new JButton(\"Play\");\r\n\r\n            //We say what happens after we choose.\r\n            playButton.addActionListener(e -> {\r\n                if (mode1Button.isSelected()) {\r\n                    gameMode = 1;\r\n                } else if (mode2Button.isSelected()) {\r\n                    gameMode = 2;\r\n                } else if (mode3Button.isSelected()) {\r\n                    gameMode = 3;\r\n                    newBoardHandleEdgeCase();\r\n\r\n                }\r\n                //You have to choose something.\r\n                else{\r\n                    showGameModeOptions();\r\n                }\r\n\r\n                inGame = true;\r\n                removeAll();\r\n                repaint();\r\n            });\r\n\r\n            add(mode1Button);\r\n            add(mode2Button);\r\n            add(mode3Button);\r\n            add(playButton);\r\n        }\r\n        revalidate();\r\n    }\r\n\r\n    public void newBoardHandleEdgeCase (){\r\n        errorNotSettingPiecesRight = new Board();\r\n        tablero2CheckError = errorNotSettingPiecesRight.populateBoard();\r\n        String FORMAT = \"http://omok.atwebpages.com/new/?strategy=%s\";\r\n\r\n        String strategy = chooseLevel();\r\n        String url = String.format(FORMAT, strategy);\r\n        String response = new MyBoardGame().sendGet(url);\r\n        \r\n\r\n        if (response.contains(\"\\\"response\\\": false\") || response.contains(\"Online\")){\r\n            JOptionPane.showMessageDialog(this, \"Online mode not available :(\", \"Offline :(\", JOptionPane.INFORMATION_MESSAGE);\r\n            inGame = false;\r\n            gameMode = 0;\r\n            showStartScreen();\r\n        }\r\n\r\n        pid = getPID(response);\r\n\r\n\r\n    }\r\n    public String getPID(String serverAnswer){\r\n        Pattern pattern = Pattern.compile(\"\\\\d(.+)\");\r\n        Matcher matcher = pattern.matcher(serverAnswer);\r\n\r\n        // Check if the pattern is found\r\n        if (matcher.find()) {\r\n            // Extract the matched substring and exclude the last 2 characters\r\n            String result = matcher.group();\r\n            return result.substring(0, result.length() - 2);\r\n        } else {\r\n            return null; // Return null if no match is found\r\n        }\r\n    }\r\n    public String chooseLevel(){\r\n        Object[] options = {\"Smart\", \"Random\"};\r\n        int choice = JOptionPane.showOptionDialog(MyBoardGame.this, \"Choose a difficulty.\", \"Difficulty?\", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);\r\n\r\n        return choice == JOptionPane.YES_NO_OPTION? \"Smart\": \"Random\";\r\n    }\r\n\r\n    public String sendGet(String urlString) {\r\n        HttpURLConnection con = null;\r\n        try {\r\n            URL url = new URL(urlString);\r\n            con = (HttpURLConnection) url.openConnection();\r\n            BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));\r\n            StringBuilder response = new StringBuilder();\r\n            String line;\r\n            while ((line = in.readLine()) != null) {\r\n                response.append(line);\r\n            }\r\n            return response.toString();\r\n        } catch (IOException e) {\r\n            //e.printStackTrace();\r\n        } finally {\r\n            if (con != null) {\r\n                con.disconnect();\r\n            }\r\n        }\r\n        return \"Online mode not available\";\r\n    }\r\n\r\n    /**\r\n    Confirmation method that is called after the restart button is pressed or actuated with accelerator.\r\n     **/\r\n    public void restart(){\r\n        int choice = JOptionPane.showConfirmDialog(MyBoardGame.this, \"Are you sure you want to restart the game?\", \"Confirm Restart\", JOptionPane.YES_NO_OPTION);\r\n        if (choice == JOptionPane.YES_OPTION) {\r\n            resetGame();  // Reset the game state\r\n            restartConfirmation = false;\r\n        }\r\n    }\r\n\r\n    /**\r\n     * Gets the line that won the game and displays it later.\r\n     * @return Beginning and ending point of winning line.\r\n     */\r\n    public Point [] showWinning (boolean whoWin){\r\n        int [][] highlightArray = board.modifyWinCheck();\r\n        winingLine(getGraphics(), highlightArray, whoWin);\r\n        Point start = new Point(highlightArray[0][0], highlightArray[1][0]);\r\n        Point end = new Point(highlightArray[0][highlightArray[0].length-1], highlightArray[1][highlightArray[0].length-1]);\r\n        System.out.println(\"(\"+start.x+\",\" +start.y+\")\" + \" , \" +\"(\"+end.x+\",\" +end.y+\")\");\r\n\r\n        return new Point[]{start, end};\r\n    }\r\n\r\n\r\n    /**\r\n     * Graphics.\r\n     * @param g the <code>Graphics</code> object to protect\r\n     */\r\n\r\n    @Override\r\n    protected void paintComponent(Graphics g) {\r\n        super.paintComponent(g);\r\n        if (inGame) {\r\n            if (gameMode == 1 || gameMode == 2) {\r\n                //If here, we know we are playing.\r\n                //What happens after we start playing is not handle here as it may cause bugs.\r\n                if (!restartConfirmation) {\r\n                    restartConfirmation = true;\r\n                    board.populateBoard();\r\n\r\n                }\r\n                drawBoard(g);\r\n            } else if (gameMode == 3) {\r\n                //Online mode is not yer available.\r\n                if (!restartConfirmation) {\r\n                    restartConfirmation = true;\r\n                }\r\n                drawBoard(g);\r\n            }\r\n        }\r\n        else{\r\n            //We draw the beginning screen.\r\n            g.setColor(Color.BLACK);\r\n            g.setFont(new Font(\"Malgun Gothic\", Font.BOLD, 50));\r\n            String welcomeMessage = \"오목 놀자\"; //\"Let's play omok\"\r\n            int messageWidth = g.getFontMetrics().stringWidth(welcomeMessage);\r\n            g.drawString(welcomeMessage, getWidth() / 2 - messageWidth / 2, getHeight() / 2);\r\n        }\r\n    }\r\n\r\n    /**\r\n     * Class that handles when there is a mouse press and we are playing.\r\n     */\r\n\r\n    class MyMouseListener implements MouseListener {\r\n        private MyBoardGame outer; // Reference to the outer class\r\n        private String [][] tablero;\r\n        //Random r = new Random();\r\n\r\n        MyMouseListener(MyBoardGame outer, Board board) {\r\n            this.outer = outer;\r\n            tablero = board.getBoard();\r\n        }\r\n\r\n        /**\r\n         * We process a mouse click.\r\n         * @param e the event to be processed\r\n         */\r\n        @Override\r\n        public void mouseClicked(MouseEvent e) {\r\n            if (!inGame) return;\r\n            whoIsPlaying(getGraphics(), isWhiteTurn);\r\n            if (Board.isThereMoves(tablero)){\r\n                int constant = 592 / 16;\r\n                if (outer.gameMode == 1){\r\n                    //We get here if are playing against another human.\r\n\r\n                    //We get their mouse click position.\r\n                    int mcX = (int) findClosestIntersection(e.getX(), e.getY()).getY();\r\n                    int mcY = (int) findClosestIntersection(e.getX(), e.getY()).getX();\r\n                    int [] playerMove = {mcY - 1,mcX - 1 };\r\n\r\n                    //We check if it was a valid move.\r\n                    if (board.isMovePossible(playerMove)){\r\n                        if (e.getX() > 37 && e.getX() < 592 && e.getY() > 37 && e.getY() < 592){\r\n                            if (isWhiteTurn) {\r\n                                board.modifyPlaceStone(playerMove, \"X\");\r\n                                whitePiece(getGraphics(), constant * mcX, constant * mcY);\r\n                                if (Board.hasSomeoneWon(board.getBoard())) win(isWhiteTurn);\r\n                            } else {\r\n                                board.modifyPlaceStone(playerMove, \"O\");\r\n                                blackPiece(getGraphics(), constant * mcX, constant * mcY);\r\n                                if (Board.hasSomeoneWon(board.getBoard())) win(isWhiteTurn);\r\n                            }\r\n                            isWhiteTurn = !isWhiteTurn;\r\n                        }\r\n                    }\r\n                }\r\n                else if (gameMode == 2){\r\n                    //Here we are playing against machine.\r\n                    int mcX = (int) findClosestIntersection(e.getX(), e.getY()).getY();\r\n                    int mcY = (int) findClosestIntersection(e.getX(), e.getY()).getX();\r\n                    int [] playerMove = {mcY - 1,mcX - 1 };\r\n\r\n                    //Check if move was valid.\r\n                    if (e.getX() > 37 && e.getX() < 592 && e.getY() > 37 && e.getY() < 592) {\r\n                        if (board.isMovePossible(playerMove)){\r\n                            board.modifyPlaceStone(playerMove, \"X\");\r\n                            whitePiece(getGraphics(), constant * mcX, constant * mcY);\r\n                            if (Board.hasSomeoneWon(board.getBoard())){\r\n                                win(true);\r\n                            }\r\n\r\n                            //Right now the computer is set to the easiest difficulty.\r\n                            //Easiest = random.\r\n                            //Hard = logic from assigment 2\r\n                            int [] cpuCoords = computerMove();\r\n                            board.modifyPlaceStone(cpuCoords, \"O\");\r\n                            cpuCoords[0] += 1; cpuCoords[1] += 1;\r\n                            blackPiece(getGraphics(), constant * cpuCoords[1], constant * cpuCoords[0]);\r\n                            if (Board.hasSomeoneWon(board.getBoard())) win(false);\r\n                        }\r\n                    }\r\n                    Board.printBoard(board.getBoard());\r\n                }\r\n                else if (gameMode == 3) {\r\n                    if (e.getX() > 37 / 2 && e.getX() < 592 && e.getY() > 37 / 2 && e.getY() < 592) {\r\n                        int mcX = (int) findClosestIntersection(e.getX(), e.getY()).getY();\r\n                        int mcY = (int) findClosestIntersection(e.getX(), e.getY()).getX();\r\n                        int[] playerMove = {mcY - 1, mcX - 1};\r\n                        String serverResponse = sendMove2Server(playerMove[0], playerMove[1]);\r\n                        System.out.println(serverResponse);\r\n                        if (!serverResponse.contains(\"Place not empty\")){\r\n                            whitePiece(getGraphics(), constant * mcX, constant * mcY);\r\n                            int [] cpuMoveServer = serverMove(serverResponse);\r\n                            errorNotSettingPiecesRight.placeStone(playerMove, \"O\", cpuMoveServer, \"X\", tablero2CheckError);\r\n                            board.helperMethodToFixErrorServerIssue(tablero2CheckError);\r\n                            blackPiece(getGraphics(), (cpuMoveServer[1]+1) * constant, (cpuMoveServer[0]+1) * constant);\r\n                        }\r\n\r\n                        if (serverResponse.contains(\"\\\"isDraw\\\":true\")){\r\n                            draw();\r\n                        }\r\n\r\n                        if (serverResponse.contains(\"isWin\\\":true\")){\r\n                            winCheckByServer(serverResponse, serverResponse.length()<110);\r\n                        }\r\n\r\n                    }\r\n                }\r\n            }\r\n            else{\r\n                draw();\r\n            }\r\n\r\n\r\n        }\r\n\r\n        public void draw (){\r\n            JOptionPane.showMessageDialog(outer, \"TIE!\", \"tie\", JOptionPane.INFORMATION_MESSAGE);\r\n            board = new Board();\r\n            board.populateBoard();\r\n            tablero = board.getBoard();\r\n            repaint();\r\n            resetGame();\r\n            //inGame = false;\r\n            restartConfirmation = false;\r\n            //showStartScreen();\r\n        }\r\n        /**\r\n         * Modify the difficulty of the machine.\r\n         * @return move of the computer.\r\n         */\r\n        public int [] computerMove (){\r\n            cpuP CPU = new cpuP(1, \"O\");\r\n            Random rand = new Random();\r\n            int [] ranAns = new int[]{rand.nextInt(14), rand.nextInt(14)};\r\n            while(!board.isMovePossible(ranAns)){\r\n                ranAns = new int[]{rand.nextInt(14), rand.nextInt(14)};\r\n            }\r\n\r\n            //If you want to play against ca higher difficulty\r\n            int [] cpuCoords = CPU.cheat(board.getBoard());\r\n            return ranAns;\r\n        }\r\n        public String sendMove2Server(int x, int y){\r\n            String url = String.format(\"http://omok.atwebpages.com/play/?pid=%s&x=%d&y=%d\", pid, x, y);\r\n            return new MyBoardGame().sendGet(url);\r\n        }\r\n        public int [] serverMove(String serverResponse){\r\n            int xValue = -1;\r\n            int yValue = -1;\r\n            // Find the index of \"move\" in the string\r\n            int moveIndex = serverResponse.indexOf(\"\\\"move\\\"\");\r\n\r\n            if (moveIndex != -1) {\r\n                // Extract the substring starting from the \"move\" object\r\n                String moveSubstring = serverResponse.substring(moveIndex);\r\n\r\n                // Find the indices of \"x\" and \"y\" in the \"move\" substring\r\n                int xIndex = moveSubstring.indexOf(\"\\\"x\\\"\");\r\n                int yIndex = moveSubstring.indexOf(\"\\\"y\\\"\");\r\n\r\n                // Extract the values of \"x\" and \"y\" based on their indices\r\n                xValue = extractValue(moveSubstring, xIndex);\r\n                yValue = extractValue(moveSubstring, yIndex);\r\n\r\n                // Store the values in a different place or print them\r\n                System.out.println(\"x: \" + xValue);\r\n                System.out.println(\"y: \" + yValue);\r\n            } else {\r\n                System.out.println(\"No 'move' object found in the string.\");\r\n            }\r\n            return new int [] {xValue, yValue};\r\n        }\r\n        private static int extractValue(String substring, int index) {\r\n            // Find the index of the next numeric character after the specified index\r\n            int startIndex = substring.indexOf(':', index) + 1;\r\n\r\n            // Find the index of the comma after the numeric value\r\n            int endIndex = substring.indexOf(',', startIndex);\r\n\r\n            // If no comma is found, consider the end of the substring\r\n            if (endIndex == -1) {\r\n                endIndex = substring.length() - 1;\r\n            }\r\n\r\n            // Extract the numeric value substring and convert it to an integer\r\n            String valueSubstring = substring.substring(startIndex, endIndex).trim();\r\n            return Integer.parseInt(valueSubstring);\r\n        }\r\n\r\n        /**\r\n         * What happens if we win.\r\n         * @param w, flag to check who wins.\r\n         */\r\n        public void win(boolean w){\r\n            Point [] highlightWin = showWinning(w);\r\n            String winner = w ? \"Blue\" : \"Red\";\r\n            JOptionPane.showMessageDialog(outer, winner +\" player wins!\\n Winning line: \" + \"(\"+getCharForNumber(highlightWin[0].y + 1)+\",\" +highlightWin[0].x+\")\" + \" , \" +\"(\"+getCharForNumber(highlightWin[1].y + 1)+\",\" +highlightWin[1].x+\")\", \"Game Over\", JOptionPane.INFORMATION_MESSAGE);\r\n\r\n            // Reset the board and play again.\r\n            // This could take you back to the startScreen but that was more of a design thing.\r\n            board = new Board();\r\n            board.populateBoard();\r\n            tablero = board.getBoard();\r\n            repaint();\r\n            resetGame();\r\n            //inGame = false;\r\n            restartConfirmation = false;\r\n            //showStartScreen();\r\n        }\r\n\r\n        public void winCheckByServer (String serverResponse, boolean whoWon){\r\n            int [][] winRow = getWinningRow(serverResponse, whoWon);\r\n            winingLine(getGraphics(), winRow, whoWon);\r\n            String winner = whoWon? \"Human\" : \"Computer\";\r\n            JOptionPane.showMessageDialog(outer, winner +\" player wins!\", \"Game Over\", JOptionPane.INFORMATION_MESSAGE);\r\n\r\n            // Reset the board and play again.\r\n            // This could take you back to the startScreen but that was more of a design thing.\r\n\r\n            repaint();\r\n            resetGame();\r\n            //inGame = false;\r\n            restartConfirmation = false;\r\n        }\r\n        public int [][] getWinningRow (String serverResponse, boolean whoWon){\r\n            //This is a sample of how it looks for the computer to win\r\n            //{\"response\":true,\"ack_move\":{\"x\":4,\"y\":7,\"isWin\":false,\"isDraw\":false,\"row\":[]},\"move\":{\"x\":4,\"y\":1,\"isWin\":true,\"isDraw\":false,\"row\":[4,1,4,2,4,3,4,4,4,5]}}\r\n            //length = 157\r\n\r\n            //This is a sample of how it looks for the player to win\r\n            //{\"response\":true,\"ack_move\":{\"x\":5,\"y\":8,\"isWin\":true,\"isDraw\":false,\"row\":[5,8,5,7,5,6,5,5,5,4]}}\r\n            //length = 98\r\n\r\n            int [][] winRow = new int[2][5];\r\n\r\n            int answer = serverResponse.indexOf(\"row\");\r\n            int finish = serverResponse.indexOf(\"]}}\");\r\n            String numbers = serverResponse.substring(answer+6,finish);\r\n\r\n            numbers = !whoWon? numbers.substring(numbers.indexOf(\"row\")+6): numbers;\r\n\r\n            String [] ans = numbers.split(\",\");\r\n\r\n            for (int i = 0; i < 5; i++){\r\n                winRow[0][i] = Integer.parseInt(ans[i*2]);\r\n                winRow[1][i] = Integer.parseInt(ans[((i+1)*2)-1]);\r\n            }\r\n            return winRow;\r\n        }\r\n\r\n        @Override\r\n        public void mousePressed(MouseEvent e) {\r\n        }\r\n\r\n        @Override\r\n        public void mouseReleased(MouseEvent e) {\r\n        }\r\n\r\n        @Override\r\n        public void mouseEntered(MouseEvent e) {\r\n        }\r\n\r\n        @Override\r\n        public void mouseExited(MouseEvent e) {\r\n        }\r\n    }\r\n\r\n    /**\r\n     * Shows what is the best move in a specific moment.\r\n     */\r\n    @Override\r\n    public void cheats() {\r\n        //Board.printBoard(board.getBoard());\r\n        cpuP CPU = new cpuP(1, \"O\");\r\n        int [] cheat = CPU.cheat(board.getBoard());\r\n        JOptionPane.showMessageDialog(this, \"Best move: \\n\"+\"(\"+getCharForNumber(cheat[1]+1)+\", \"+(cheat[0])+\")\", \"Cheat\", JOptionPane.INFORMATION_MESSAGE);\r\n\r\n    }\r\n\r\n    /**\r\n     * main method.\r\n     * @param args could have args to change screen size, but I decided to keep it fixed.\r\n     */\r\n\r\n    public static void main(String[] args) {\r\n        new MyBoardGame().run();\r\n    }\r\n}\r\n
+===================================================================
+diff --git a/src/nothingHW4/MyBoardGame.java b/src/nothingHW4/MyBoardGame.java
+--- a/src/nothingHW4/MyBoardGame.java	
++++ b/src/nothingHW4/MyBoardGame.java	
+@@ -141,6 +141,10 @@
+         revalidate();
+     }
+ 
++    /**
++     * Connects to the server to play online against a bot.
++     * Trys to connect, if not possible displays a message.
++     */
+     public void newBoardHandleEdgeCase (){
+         errorNotSettingPiecesRight = new Board();
+         tablero2CheckError = errorNotSettingPiecesRight.populateBoard();
+@@ -162,6 +166,13 @@
+ 
+ 
+     }
++
++    /**
++     * Gets the PID number from what ever the server response.
++     * No number == no connection.
++     * @param serverAnswer Server output
++     * @return PID if exists, null otherwise.
++     */
+     public String getPID(String serverAnswer){
+         Pattern pattern = Pattern.compile("\\d(.+)");
+         Matcher matcher = pattern.matcher(serverAnswer);
+@@ -175,6 +186,12 @@
+             return null; // Return null if no match is found
+         }
+     }
++
++    /**
++     * Prompts the user what they want to play.
++     *
++     * @return Player option as a String.
++     */
+     public String chooseLevel(){
+         Object[] options = {"Smart", "Random"};
+         int choice = JOptionPane.showOptionDialog(MyBoardGame.this, "Choose a difficulty.", "Difficulty?", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+@@ -182,6 +199,13 @@
+         return choice == JOptionPane.YES_NO_OPTION? "Smart": "Random";
+     }
+ 
++    /**
++     * We ask the server to start a new game, if we receive an answer with PID number, we start a game.
++     *
++     * @param urlString Professor's server.
++     * @return Whatever the server outputs.
++     *         Online mode not available if no PID.
++     */
+     public String sendGet(String urlString) {
+         HttpURLConnection con = null;
+         try {
+@@ -341,6 +365,7 @@
+                     }
+                     Board.printBoard(board.getBoard());
+                 }
++                //New mode implemented after HW5, it connects to a server to get the moves from a bot.
+                 else if (gameMode == 3) {
+                     if (e.getX() > 37 / 2 && e.getX() < 592 && e.getY() > 37 / 2 && e.getY() < 592) {
+                         int mcX = (int) findClosestIntersection(e.getX(), e.getY()).getY();
+@@ -348,6 +373,7 @@
+                         int[] playerMove = {mcY - 1, mcX - 1};
+                         String serverResponse = sendMove2Server(playerMove[0], playerMove[1]);
+                         System.out.println(serverResponse);
++                        //If we get as answer that we can place a stone there then we do and get bot's play.
+                         if (!serverResponse.contains("Place not empty")){
+                             whitePiece(getGraphics(), constant * mcX, constant * mcY);
+                             int [] cpuMoveServer = serverMove(serverResponse);
+@@ -374,6 +400,9 @@
+ 
+         }
+ 
++        /**
++         * What ever happens after a long game of nothing.
++         */
+         public void draw (){
+             JOptionPane.showMessageDialog(outer, "TIE!", "tie", JOptionPane.INFORMATION_MESSAGE);
+             board = new Board();
+@@ -387,6 +416,10 @@
+         }
+         /**
+          * Modify the difficulty of the machine.
++         * It is set to return random moves. Difficulty can be adjuted.
++         *
++         * Possible todo:
++         * Make it so they can choose a level to play against.
+          * @return move of the computer.
+          */
+         public int [] computerMove (){
+@@ -401,10 +434,24 @@
+             int [] cpuCoords = CPU.cheat(board.getBoard());
+             return ranAns;
+         }
++
++        /**
++         * We send to the server the players move, and we get a response.
++         * @param x players move.
++         * @param y players move.
++         * @return server response.
++         */
+         public String sendMove2Server(int x, int y){
+             String url = String.format("http://omok.atwebpages.com/play/?pid=%s&x=%d&y=%d", pid, x, y);
+             return new MyBoardGame().sendGet(url);
+         }
++
++        /**
++         * From the server response, we get the bot's move.
++         * @param serverResponse server output.
++         *                       Example: {"response":true,"ack_move":{"x":4,"y":7,"isWin":false,"isDraw":false,"row":[]},"move":{"x":4,"y":1,"isWin":true,"isDraw":false,"row":[4,1,4,2,4,3,4,4,4,5]}}
++         * @return x and y coordinates.
++         */
+         public int [] serverMove(String serverResponse){
+             int xValue = -1;
+             int yValue = -1;
+@@ -431,6 +478,13 @@
+             }
+             return new int [] {xValue, yValue};
+         }
++
++        /**
++         * Helper method to get values from server response.
++         * @param substring part of the string containing bot moves.
++         * @param index first number value.
++         * @return coordinates.
++         */
+         private static int extractValue(String substring, int index) {
+             // Find the index of the next numeric character after the specified index
+             int startIndex = substring.indexOf(':', index) + 1;
+@@ -450,6 +504,7 @@
+ 
+         /**
+          * What happens if we win.
++         * This is made for the local games as I didn't know how server would work.
+          * @param w, flag to check who wins.
+          */
+         public void win(boolean w){
+@@ -469,6 +524,11 @@
+             //showStartScreen();
+         }
+ 
++        /**
++         * Almost a copy of other win method but for the network implementation.
++         * @param serverResponse reads if server says someone has won.
++         * @param whoWon flag to check if human won or not.
++         */
+         public void winCheckByServer (String serverResponse, boolean whoWon){
+             int [][] winRow = getWinningRow(serverResponse, whoWon);
+             winingLine(getGraphics(), winRow, whoWon);
+@@ -483,6 +543,15 @@
+             //inGame = false;
+             restartConfirmation = false;
+         }
++
++        /**
++         * Server will also tell you who won, this method tells you where.
++         * @param serverResponse reads winning row.
++         * @param whoWon "flag to check if it was human"
++         * @return coordinates for winning row.
++         *         row 0 for x's
++         *         row 1 for y's
++         */
+         public int [][] getWinningRow (String serverResponse, boolean whoWon){
+             //This is a sample of how it looks for the computer to win
+             //{"response":true,"ack_move":{"x":4,"y":7,"isWin":false,"isDraw":false,"row":[]},"move":{"x":4,"y":1,"isWin":true,"isDraw":false,"row":[4,1,4,2,4,3,4,4,4,5]}}
+@@ -528,6 +597,7 @@
+ 
+     /**
+      * Shows what is the best move in a specific moment.
++     * We can also determine the "threat" level. cheat[2] shows how close the player is to win. 
+      */
+     @Override
+     public void cheats() {

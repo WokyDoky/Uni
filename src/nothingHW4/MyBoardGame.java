@@ -141,6 +141,11 @@ public class MyBoardGame extends boardDraw {
         revalidate();
     }
 
+    /**
+     * Connects to the server.
+     * Checks if it's possible, if not, user is notify.
+     */
+
     public void newBoardHandleEdgeCase (){
         errorNotSettingPiecesRight = new Board();
         tablero2CheckError = errorNotSettingPiecesRight.populateBoard();
@@ -162,6 +167,12 @@ public class MyBoardGame extends boardDraw {
 
 
     }
+
+    /**
+     * gets PID number from server.
+     * @param serverAnswer answer response from connecting.
+     * @return pid number if possible.
+     */
     public String getPID(String serverAnswer){
         Pattern pattern = Pattern.compile("\\d(.+)");
         Matcher matcher = pattern.matcher(serverAnswer);
@@ -175,6 +186,11 @@ public class MyBoardGame extends boardDraw {
             return null; // Return null if no match is found
         }
     }
+
+    /**
+     * User is prompted to choose a difficulty.
+     * @return String with chosen option.
+     */
     public String chooseLevel(){
         Object[] options = {"Smart", "Random"};
         int choice = JOptionPane.showOptionDialog(MyBoardGame.this, "Choose a difficulty.", "Difficulty?", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
@@ -182,6 +198,12 @@ public class MyBoardGame extends boardDraw {
         return choice == JOptionPane.YES_NO_OPTION? "Smart": "Random";
     }
 
+    /**
+     * This is the first handshake between server and this code.
+     * If possible, we get answer with PID, else we let know the player it wasn't possible.
+     * @param urlString url for the server.
+     * @return server response.
+     */
     public String sendGet(String urlString) {
         HttpURLConnection con = null;
         try {
@@ -249,7 +271,7 @@ public class MyBoardGame extends boardDraw {
                 }
                 drawBoard(g);
             } else if (gameMode == 3) {
-                //Online mode is not yer available.
+                //Online mode is now available :)
                 if (!restartConfirmation) {
                     restartConfirmation = true;
                 }
@@ -341,6 +363,8 @@ public class MyBoardGame extends boardDraw {
                     }
                     Board.printBoard(board.getBoard());
                 }
+
+                //Now we have a third game mode, online mode.
                 else if (gameMode == 3) {
                     if (e.getX() > 37 / 2 && e.getX() < 592 && e.getY() > 37 / 2 && e.getY() < 592) {
                         int mcX = (int) findClosestIntersection(e.getX(), e.getY()).getY();
@@ -348,9 +372,16 @@ public class MyBoardGame extends boardDraw {
                         int[] playerMove = {mcY - 1, mcX - 1};
                         String serverResponse = sendMove2Server(playerMove[0], playerMove[1]);
                         System.out.println(serverResponse);
+                        //Check if move is possible, if not, move on.
                         if (!serverResponse.contains("Place not empty")){
                             whitePiece(getGraphics(), constant * mcX, constant * mcY);
                             int [] cpuMoveServer = serverMove(serverResponse);
+
+                            //Here, I was having issue placing pieces and notice that my issue was that the method from Board was static.
+                            //A Better solution would have been to use the provided method from past game modes.
+                            //Quick patch to use another object.
+                            //It just overwrites the original board.
+
                             errorNotSettingPiecesRight.placeStone(playerMove, "O", cpuMoveServer, "X", tablero2CheckError);
                             board.helperMethodToFixErrorServerIssue(tablero2CheckError);
                             blackPiece(getGraphics(), (cpuMoveServer[1]+1) * constant, (cpuMoveServer[0]+1) * constant);
@@ -374,6 +405,9 @@ public class MyBoardGame extends boardDraw {
 
         }
 
+        /**
+         * What happens after a long game and nothing happens.
+         */
         public void draw (){
             JOptionPane.showMessageDialog(outer, "TIE!", "tie", JOptionPane.INFORMATION_MESSAGE);
             board = new Board();
@@ -387,6 +421,7 @@ public class MyBoardGame extends boardDraw {
         }
         /**
          * Modify the difficulty of the machine.
+         * It is hard coded to be random moves but this can quickly be changed to up the difficulty.
          * @return move of the computer.
          */
         public int [] computerMove (){
@@ -397,14 +432,28 @@ public class MyBoardGame extends boardDraw {
                 ranAns = new int[]{rand.nextInt(14), rand.nextInt(14)};
             }
 
-            //If you want to play against ca higher difficulty
+            //If you want to play against a higher difficulty
             int [] cpuCoords = CPU.cheat(board.getBoard());
             return ranAns;
         }
+
+        /**
+         * We send to the server the players move.
+         * @param x player move.
+         * @param y player move.
+         * @return server response.
+         *         Example: {"response":true,"ack_move":{"x":4,"y":7,"isWin":false,"isDraw":false,"row":[]},"move":{"x":4,"y":1,"isWin":true,"isDraw":false,"row":[4,1,4,2,4,3,4,4,4,5]}}
+         */
         public String sendMove2Server(int x, int y){
             String url = String.format("http://omok.atwebpages.com/play/?pid=%s&x=%d&y=%d", pid, x, y);
             return new MyBoardGame().sendGet(url);
         }
+
+        /**
+         * After moving, we read what the bot had to check and get the move.
+         * @param serverResponse server answer to read the move.
+         * @return returns the move.
+         */
         public int [] serverMove(String serverResponse){
             int xValue = -1;
             int yValue = -1;
@@ -431,6 +480,13 @@ public class MyBoardGame extends boardDraw {
             }
             return new int [] {xValue, yValue};
         }
+
+        /**
+         * Helper method to check the bot's move.
+         * @param substring portion of string with moves.
+         * @param index position for said moves.
+         * @return coordinates.
+         */
         private static int extractValue(String substring, int index) {
             // Find the index of the next numeric character after the specified index
             int startIndex = substring.indexOf(':', index) + 1;
@@ -450,6 +506,8 @@ public class MyBoardGame extends boardDraw {
 
         /**
          * What happens if we win.
+         * This was made before implementing the network part as I didn't know how it was going to work.
+         *
          * @param w, flag to check who wins.
          */
         public void win(boolean w){
@@ -469,20 +527,33 @@ public class MyBoardGame extends boardDraw {
             //showStartScreen();
         }
 
+        /**
+         * Works very similar to the original win() method.
+         * This time is account for the fact that it is the server to tell us if we won or not.
+         * @param serverResponse string after someone or something won.
+         * @param whoWon flag to determine player that won.
+         *               It is determined by the size of the serverResponse as they differ.
+         */
         public void winCheckByServer (String serverResponse, boolean whoWon){
             int [][] winRow = getWinningRow(serverResponse, whoWon);
             winingLine(getGraphics(), winRow, whoWon);
             String winner = whoWon? "Human" : "Computer";
+            //Shows how win.
             JOptionPane.showMessageDialog(outer, winner +" player wins!", "Game Over", JOptionPane.INFORMATION_MESSAGE);
 
-            // Reset the board and play again.
-            // This could take you back to the startScreen but that was more of a design thing.
 
+            //Reset game.
             repaint();
             resetGame();
-            //inGame = false;
             restartConfirmation = false;
         }
+
+        /**
+         * Sever tells you the winning row in a weird format. This method accounts for that.
+         * @param serverResponse reads winning row.
+         * @param whoWon flag to pain different color who won.
+         * @return coordinates of where that win occurred.
+         */
         public int [][] getWinningRow (String serverResponse, boolean whoWon){
             //This is a sample of how it looks for the computer to win
             //{"response":true,"ack_move":{"x":4,"y":7,"isWin":false,"isDraw":false,"row":[]},"move":{"x":4,"y":1,"isWin":true,"isDraw":false,"row":[4,1,4,2,4,3,4,4,4,5]}}
@@ -509,6 +580,10 @@ public class MyBoardGame extends boardDraw {
             return winRow;
         }
 
+        /**
+         * The following method are never used but maybe should for a prettier implementation.
+         * @param e the event to be processed
+         */
         @Override
         public void mousePressed(MouseEvent e) {
         }
@@ -528,6 +603,8 @@ public class MyBoardGame extends boardDraw {
 
     /**
      * Shows what is the best move in a specific moment.
+     * tldr; it checks if someone can win in the next move, if so then block it,
+     * then if someone can make 4 in a row and so on.
      */
     @Override
     public void cheats() {
