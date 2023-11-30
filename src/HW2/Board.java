@@ -163,7 +163,7 @@ public class Board {
      * That way I can keep the same method, although I would like to have the human as a param
      * @// TODO: 10/22/2023  make the haveYouWon a static method
      * It will check if the board is "won" and the last player to have placed a piece will be declared as winner.
-     * @param player the acutal move of the player
+     * @param player the actual move of the player
      * @param playerPT the piece type of the player
      * @param opps the move of the opponent
      * @param oppsPT the piece type of the opponent
@@ -382,7 +382,7 @@ public class Board {
     }
     /**
      *
-     * Checks if ithe best move possible can work on current board.
+     * Checks if the best move possible can work on current board.
      * This is made for the computer so no printing is done.
      * Overloaded Method.
      *
@@ -400,6 +400,23 @@ public class Board {
 
         return computer.coord(tablero);
     }
+
+    /**
+     * Copies a string to the non-static board.
+     * This was made because I was having issued with Array pointers.
+     * Can be solved without this method.
+     * Left as an exercise for the reader :)
+     *
+     * @param copy gets desired array.
+     */
+    public void helperMethodToFixErrorServerIssue (String [][] copy){
+        tablero = copy;
+    }
+
+    /**
+     *
+     * @return String array of board.
+     */
     public String [][] getBoard (){
         return tablero;
     }

@@ -83,6 +83,7 @@ abstract class Player {
         String [][] temp = new String[tablero.length][tablero.length];
         ArrayList<int []> ans = new ArrayList<>();
 
+        //This is to copy the board without reference.
         for (int i = 0; i < tablero.length; i++){
             for (int j = 0; j < tablero.length; j++){
                 temp[i][j] = tablero[i][j];
@@ -93,10 +94,11 @@ abstract class Player {
 
         for (int i = 0; i < tablero.length; i++){
             for (int j = 0; j < tablero.length;j++){
-                if (tablero[i][j].equals("X") || tablero[i][j].equals("O")) continue;
-                resp = isThereAWin(temp, i, j);
-                if (resp[2] != 0){
-                    ans.add(resp);
+                if (tablero[i][j].equals(".")) {
+                    resp = isThereAWin(temp, i, j);
+                    if (resp[2] != 0){
+                        ans.add(resp);
+                    }
                 }
             }
         }
@@ -158,14 +160,14 @@ abstract class Player {
             temp[i][j] = ".";
             return ans;
         }
-        if(find4(temp)){
+        if(find4Now(temp)){
             ans[0] = i;
             ans[1] = j;
             ans[2] = 4;
             temp[i][j] = ".";
             return ans;
         }
-        if (find3(temp)) {
+        if (find3Now(temp)) {
             ans[0] = i;
             ans[1] = j;
             ans[2] = 3;
@@ -214,6 +216,59 @@ abstract class Player {
 
 
     }
+    private boolean find4Now(String[][] tablero) {
+        // Check horizontally
+        for (int i = 0; i < tablero.length; i++) {
+            for (int j = 0; j < tablero[i].length - 3; j++) {
+                if (!tablero[i][j].equals(".") &&
+                        tablero[i][j].equals(tablero[i][j + 1]) &&
+                        tablero[i][j + 1].equals(tablero[i][j + 2]) &&
+                        tablero[i][j + 2].equals(tablero[i][j + 3])) {
+                    return true;
+                }
+            }
+        }
+
+        // Check vertically
+        for (int i = 0; i < tablero.length - 3; i++) {
+            for (int j = 0; j < tablero[i].length; j++) {
+                if (!tablero[i][j].equals(".") &&
+                        tablero[i][j].equals(tablero[i + 1][j]) &&
+                        tablero[i + 1][j].equals(tablero[i + 2][j]) &&
+                        tablero[i + 2][j].equals(tablero[i + 3][j])) {
+                    return true;
+                }
+            }
+        }
+
+        // Check diagonally (bottom-left to top-right)
+        for (int i = 3; i < tablero.length; i++) {
+            for (int j = 0; j < tablero[i].length - 3; j++) {
+                if (!tablero[i][j].equals(".") &&
+                        tablero[i][j].equals(tablero[i - 1][j + 1]) &&
+                        tablero[i - 1][j + 1].equals(tablero[i - 2][j + 2]) &&
+                        tablero[i - 2][j + 2].equals(tablero[i - 3][j + 3])) {
+                    return true;
+                }
+            }
+        }
+
+        // Check diagonally (top-left to bottom-right)
+        for (int i = 0; i < tablero.length - 3; i++) {
+            for (int j = 0; j < tablero[i].length - 3; j++) {
+                if (!tablero[i][j].equals(".") &&
+                        tablero[i][j].equals(tablero[i + 1][j + 1]) &&
+                        tablero[i + 1][j + 1].equals(tablero[i + 2][j + 2]) &&
+                        tablero[i + 2][j + 2].equals(tablero[i + 3][j + 3])) {
+                    return true;
+                }
+            }
+        }
+
+        // If no 4 in a row is found, return false
+        return false;
+    }
+
 
     /**
      * Works very similar to the method that check if you have won but instead of 5 in a row,
@@ -254,6 +309,46 @@ abstract class Player {
 
 
     }
+    private boolean find3Now(String[][] tablero) {
+        // Check horizontally.
+        for (int i = 0; i < tablero.length; i++) {
+            for (int j = 0; j < tablero[i].length - 2; j++) { // Adjusted loop limit
+                if (!tablero[i][j].equals(".") && tablero[i][j].equals(tablero[i][j + 1]) && tablero[i][j + 1].equals(tablero[i][j + 2])) {
+                    return true;
+                }
+            }
+        }
+
+        // Check vertically.
+        for (int i = 0; i < tablero.length - 2; i++) { // Adjusted loop limit
+            for (int j = 0; j < tablero[i].length; j++) {
+                if (!tablero[i][j].equals(".") && tablero[i][j].equals(tablero[i + 1][j]) && tablero[i + 1][j].equals(tablero[i + 2][j])) {
+                    return true;
+                }
+            }
+        }
+
+        // Check diagonally (from top-left to bottom-right).
+        for (int i = 0; i < tablero.length - 2; i++) { // Adjusted loop limit
+            for (int j = 0; j < tablero[i].length - 2; j++) { // Adjusted loop limit
+                if (!tablero[i][j].equals(".") && tablero[i][j].equals(tablero[i + 1][j + 1]) && tablero[i + 1][j + 1].equals(tablero[i + 2][j + 2])) {
+                    return true;
+                }
+            }
+        }
+
+        // Check diagonally (from top-right to bottom-left).
+        for (int i = 0; i < tablero.length - 2; i++) { // Adjusted loop limit
+            for (int j = 2; j < tablero[i].length; j++) { // Adjusted loop limit and starting point
+                if (!tablero[i][j].equals(".") && tablero[i][j].equals(tablero[i + 1][j - 1]) && tablero[i + 1][j - 1].equals(tablero[i + 2][j - 2])) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
 
     /**
      * If you cannot make 3, 4, or 5 in a row then recommend a neighbouring piece.
