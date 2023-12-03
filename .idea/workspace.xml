@@ -4,12 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a8397577-022c-47ad-86e4-2c30f4d51b5b" name="Changes" comment="Working version.&#10;&#10;I think everything works. This last push was to add little indicator of whose turn is it. Added the cheats. Just missing the graphic glitch.">
-      <change afterPath="$PROJECT_DIR$/src/HW5/NetworkAdapter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/testing/Counter.java" afterDir="false" />
+    <list default="true" id="a8397577-022c-47ad-86e4-2c30f4d51b5b" name="Changes" comment="Homework 5&#10;Working version. &#10;&#10;It is pretty much finish. There is still a lot to optimize, but it is working. &#10;&#10;Quick notes: &#10;-We can make the &quot;cheat&quot; waaaay better. &#10;-Ask how to make the pieces not disappear after they are &quot;rendered&quot; again.&#10;-Add multiplayer option. &#10;-Check what happens when server doesn't work mid-game.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/HW2/Board.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/HW2/Board.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/HW2/Player.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/HW2/Player.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/nothingHW4/MyBoardGame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/nothingHW4/MyBoardGame.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -28,7 +24,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="master" />
+        <entry key="$PROJECT_DIR$" value="Server-Implementation" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -144,9 +140,9 @@
       <list>
         <item itemvalue="Application.MyBoardGame" />
         <item itemvalue="Application.OmokV2" />
+        <item itemvalue="Application.MenuBarExample_UltraExtended" />
         <item itemvalue="Application.HW5.MyBoardGame" />
         <item itemvalue="Application.Counter" />
-        <item itemvalue="Application.MenuBarExample_UltraExtended" />
       </list>
     </recent_temporary>
   </component>
@@ -197,6 +193,9 @@
       <workItem from="1700691396313" duration="138000" />
       <workItem from="1701099071090" duration="28839000" />
       <workItem from="1701292936930" duration="8205000" />
+      <workItem from="1701384621449" duration="1262000" />
+      <workItem from="1701485888542" duration="904000" />
+      <workItem from="1701567194752" duration="1301000" />
     </task>
     <task id="LOCAL-00001" summary="Working version, just mising computer vision.">
       <option name="closed" value="true" />
@@ -262,7 +261,23 @@
       <option name="project" value="LOCAL" />
       <updated>1699832636916</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="Homework 5&#10;Working version. &#10;&#10;It is pretty much finish. There is still a lot to optimize, but it is working. &#10;&#10;Quick notes: &#10;-We can make the &quot;cheat&quot; waaaay better. &#10;-Ask how to make the pieces not disappear after they are &quot;rendered&quot; again.&#10;-Add multiplayer option. &#10;-Check what happens when server doesn't work mid-game.">
+      <option name="closed" value="true" />
+      <created>1701317097407</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1701317097407</updated>
+    </task>
+    <task id="LOCAL-00010" summary="Homework 5&#10;Working version. &#10;&#10;It is pretty much finish. There is still a lot to optimize, but it is working. &#10;&#10;Quick notes: &#10;-We can make the &quot;cheat&quot; waaaay better. &#10;-Ask how to make the pieces not disappear after they are &quot;rendered&quot; again.&#10;-Add multiplayer option. &#10;-Check what happens when server doesn't work mid-game.">
+      <option name="closed" value="true" />
+      <created>1701317148184</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1701317148184</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -275,7 +290,8 @@
     <MESSAGE value="Working version, should probably change some static methods and get prepared for the GUI version of the code.&#10;&#10;Added the professors board and the test.&#10;&#10;Added Java Doc." />
     <MESSAGE value="Working version.&#10;&#10;Missing Java Doc for new classes.&#10;&#10;Just missing the menu button. Cheat is not working, missing piece. Method can hel ." />
     <MESSAGE value="Working version.&#10;&#10;I think everything works. This last push was to add little indicator of whose turn is it. Added the cheats. Just missing the graphic glitch." />
-    <option name="LAST_COMMIT_MESSAGE" value="Working version.&#10;&#10;I think everything works. This last push was to add little indicator of whose turn is it. Added the cheats. Just missing the graphic glitch." />
+    <MESSAGE value="Homework 5&#10;Working version. &#10;&#10;It is pretty much finish. There is still a lot to optimize, but it is working. &#10;&#10;Quick notes: &#10;-We can make the &quot;cheat&quot; waaaay better. &#10;-Ask how to make the pieces not disappear after they are &quot;rendered&quot; again.&#10;-Add multiplayer option. &#10;-Check what happens when server doesn't work mid-game." />
+    <option name="LAST_COMMIT_MESSAGE" value="Homework 5&#10;Working version. &#10;&#10;It is pretty much finish. There is still a lot to optimize, but it is working. &#10;&#10;Quick notes: &#10;-We can make the &quot;cheat&quot; waaaay better. &#10;-Ask how to make the pieces not disappear after they are &quot;rendered&quot; again.&#10;-Add multiplayer option. &#10;-Check what happens when server doesn't work mid-game." />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

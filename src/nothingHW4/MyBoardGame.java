@@ -120,6 +120,11 @@ public class MyBoardGame extends boardDraw {
                     gameMode = 2;
                 } else if (mode3Button.isSelected()) {
                     gameMode = 3;
+
+                    // Here we can prompt the user for a URL
+                    //But it gets tedious to for testing.
+                    //The commented method is the full implementation of this.
+                    //promptsForString();
                     newBoardHandleEdgeCase();
 
                 }
@@ -142,6 +147,38 @@ public class MyBoardGame extends boardDraw {
     }
 
     /**
+     * This is method is for completion purposes.
+     * Just to show that we can get the link from the user.
+     * I hard coded the URL for user-friendliness.
+     *
+     * @return URL if connection established.
+     */
+    public String promptsForString (){
+
+        //Prompt user for string...
+        String FORMAT = JOptionPane.showInputDialog(this, "Enter the URL for the game:");
+
+        String strategy = chooseLevel();
+
+        try{
+            String url = String.format(FORMAT, strategy);
+            String response = new MyBoardGame().sendGet(url);
+            System.out.println(response);
+        }catch (Exception e){
+            JOptionPane.showMessageDialog(this, "Invalid URL", "No URL", JOptionPane.INFORMATION_MESSAGE);
+            gameMode = 0;
+            showStartScreen();
+            return null;
+        }
+        finally {
+            System.out.println("Success");
+        }
+
+
+        return FORMAT;
+    }
+
+    /**
      * Connects to the server.
      * Checks if it's possible, if not, user is notified.
      */
@@ -149,12 +186,15 @@ public class MyBoardGame extends boardDraw {
     public void newBoardHandleEdgeCase (){
         errorNotSettingPiecesRight = new Board();
         tablero2CheckError = errorNotSettingPiecesRight.populateBoard();
+
+        //Prompt user for string...
+        //Call promptsForString();
         String FORMAT = "http://omok.atwebpages.com/new/?strategy=%s";
 
         String strategy = chooseLevel();
         String url = String.format(FORMAT, strategy);
         String response = new MyBoardGame().sendGet(url);
-        
+
 
         if (response.contains("\"response\": false") || response.contains("Online")){
             JOptionPane.showMessageDialog(this, "Online mode not available :(", "Offline :(", JOptionPane.INFORMATION_MESSAGE);
